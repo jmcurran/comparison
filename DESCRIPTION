@@ -1,0 +1,12 @@
+Package: comparison
+Version: 1.0-5
+Date: 2020-07-30
+Title: Multivariate likelihood ratio calculation and evaluation
+Author: David Lucy <d.lucy@lancaster.ac.uk>
+Maintainer: James Curran <j.curran@auckland.ac.nz>
+Encoding: UTF-8
+Description: Functions for calculating and evaluating likelihood ratios from uni/multivariate continuous observations
+Imports: isotone, methods
+License: GPL-2
+LazyLoad: yes
+RoxygenNote: 7.1.1
