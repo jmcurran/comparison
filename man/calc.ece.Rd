@@ -2,26 +2,49 @@
 % Please edit documentation in R/calc.ece.R
 \name{calc.ece}
 \alias{calc.ece}
-\title{Calculate empirical cross entropy (ECE)}
+\title{Empirical cross-entropy (ECE) calculation}
 \usage{
 calc.ece(LR.ss, LR.ds, prior = seq(from = 0.01, to = 0.99, length = 99))
 }
 \arguments{
-\item{LR.ss}{}
+\item{LR.ss}{a vector of likelihood ratios (LRs) from same source
+calculations}
 
-\item{LR.ds}{}
+\item{LR.ds}{a vector of LRs from different source calculations}
 
-\item{prior}{}
+\item{prior}{a vector of ordinates for the prior in ascending order, and
+between 0 and 1. Default is 99 divisions of 0.01 to 0.99.}
 }
 \value{
-
+Returns an S3 object of class \code{ece}
 }
 \description{
-Functions to conduct emprical cross entropy calculations these functions are
-a reworking of Danial Ramos' ECE functions for Matlab (C) David Lucy 22 June
-2010 uses the \code{gpava} function from the \code{isotone} package as a calibrated set
-is needed calculates ECE according to Ramos (various) but mostly Ramos IEEE
-2008 Equation 15 has a default prior of 99 bins
+Calculates the empirical cross-entropy (ECE) for likelihood ratios from a
+sequence same and different item comparisons.
+}
+\details{
+\subsection{Acknowledgements}{
+
+The function to calculate the values of the likelihood ratio for the
+\code{calibrated.set} draws heavily upon the \code{opt_loglr.m} function from
+Niko Brummer's FoCal package for Matlab.
+}
+}
+\examples{
+LR.same = c(0.5, 2, 4, 6, 8, 10) 		# the same has 1 LR < 1
+LR.different = c(0.2, 0.4, 0.6, 0.8, 1.1) 	# the different has 1 LR > 1
+ece.1 = calc.ece(LR.same, LR.different)	# simplest invocation
+plot(ece.1)					# use plot method
+}
+\references{
+Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis
+of the information in forensic speaker recognition; IEEE Odyssey.
+Zadora, G. & Ramos, D. (2010) Evaluation of glass samples for forensic purposes -
+an application of likelihood ratio model and information-theoretical
+approach. Chemometrics and Intelligent Laboratory: 102; 63-83.
+}
+\seealso{
+\code{\link[isotone:gpava]{isotone::gpava()}}, \code{\link[=calibrate.set]{calibrate.set()}}
 }
 \author{
 David Lucy

@@ -4,21 +4,32 @@
 \alias{calibrate.set}
 \title{Calculate the calibrated set of idea LRs}
 \usage{
-calibrate.set(LR.ss, LR.ds, method = "raw")
+calibrate.set(LR.ss, LR.ds, method = c("raw", "laplace"))
 }
 \arguments{
-\item{method}{}
+\item{LR.ss}{a vector of likelihood ratios for the comparisons of items known to be from the same source}
+
+\item{LR.ds}{a vector of likelihood ratios for the comparisons of items known to be from different sources}
+
+\item{method}{the method used to perform the calculation, either \code{"raw"} or \code{"laplace"}}
 }
 \value{
-
+a \code{list} with two items: \describe{
+\item{LR.cal.ss}{calibrated lrs for the comparison for same set}
+\item{LR.cal.ds}{calibrated lrs for the comparison for different set}
+}
 }
 \description{
-Functions to conduct emprical cross entropy calculations these functions are
-a reworking of Danial Ramos' ECE functions for Matlab (C) David Lucy 20 July
-2010 calculates and returns the calibrated set of `ideal' LRs from the
+Calculates and returns the calibrated set of `ideal' LRs from the
 observed LRs using the penalised adjacent violators algotrthm This is very
 much a rewrite of Nico Brummer's optloglr() function for Matlab, only for R
-draws heavily on Nico Brummer's work
+draws heavily on Nico Brummer's work.
+}
+\references{
+Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis of the information in forensic speaker recognition; IEEE Odyssey.
+}
+\seealso{
+\code{\link[isotone]{gpava}}, #' \code{\link{calibrate.set}}, #' \code{\link{calc.ece}}
 }
 \author{
 David Lucy

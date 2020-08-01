@@ -1,24 +1,41 @@
-#' Calculate empirical cross entropy (ECE)
+#' Empirical cross-entropy (ECE) calculation
 #'
-#' Functions to conduct emprical cross entropy calculations these functions are
-#' a reworking of Danial Ramos' ECE functions for Matlab (C) David Lucy 22 June
-#' 2010 uses the \code{gpava} function from the \code{isotone} package as a calibrated set
-#' is needed calculates ECE according to Ramos (various) but mostly Ramos IEEE
-#' 2008 Equation 15 has a default prior of 99 bins
-
-#' @param LR.ss 
-#' @param LR.ds 
-#' @param prior 
+#' Calculates the empirical cross-entropy (ECE) for likelihood ratios from a
+#' sequence same and different item comparisons.
+#'
+#' ### Acknowledgements
+#' The function to calculate the values of the likelihood ratio for the
+#' `calibrated.set` draws heavily upon the `opt_loglr.m` function from
+#' Niko Brummer's FoCal package for Matlab.
+#' 
+#' @seealso [isotone::gpava()], [calibrate.set()]
+#'
+#' @param LR.ss a vector of likelihood ratios (LRs) from same source
+#'   calculations
+#' @param LR.ds a vector of LRs from different source calculations
+#' @param prior a vector of ordinates for the prior in ascending order, and
+#'   between 0 and 1. Default is 99 divisions of 0.01 to 0.99.
 #'
 #' @author David Lucy
-#' 
+#'
 #' @importFrom isotone gpava
-#' @importFrom methods new
-#' 
-#' @return
-#' @export
+#'
+#'
+#'
+#' @references Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis
+#'   of the information in forensic speaker recognition; IEEE Odyssey. 
+#'   Zadora, G. & Ramos, D. (2010) Evaluation of glass samples for forensic purposes -
+#'   an application of likelihood ratio model and information-theoretical
+#'   approach. Chemometrics and Intelligent Laboratory: 102; 63-83.
+#'
+#' @return Returns an S3 object of class ```ece```
 #'
 #' @examples
+#' LR.same = c(0.5, 2, 4, 6, 8, 10) 		# the same has 1 LR < 1
+#' LR.different = c(0.2, 0.4, 0.6, 0.8, 1.1) 	# the different has 1 LR > 1
+#' ece.1 = calc.ece(LR.same, LR.different)	# simplest invocation
+#' plot(ece.1)					# use plot method
+#' @export
 calc.ece = function(LR.ss, LR.ds, prior = seq(from = 0.01, to = 0.99, length = 99)) {
     # get the lengths of the LR vectors and prior vector
     n.ss = length(LR.ss)
@@ -67,6 +84,13 @@ calc.ece = function(LR.ss, LR.ds, prior = seq(from = 0.01, to = 0.99, length = 9
     # S3 classes - function now S4 put together a list of the prior and ECEs out = list(prior, ECE, ECE.null, ECE.cal) names(out) =
     # c('prior', 'ECE', 'ECE.null', 'ECE.cal') and return it return(out)
     
-    return(new("ece", prior = prior, ece.null = ECE.null, ece = ECE, ece.cal = ECE.cal))
+    #return(new("ece", prior = prior, ece.null = ECE.null, ece = ECE, ece.cal = ECE.cal))
+    
+    result = list(prior = prior,
+                  ece.null = ECE.null,
+                  ece = ECE,
+                  ece.cal = ECE.cal)
+    class(result) = "ece"
+    return(result)
 }
 

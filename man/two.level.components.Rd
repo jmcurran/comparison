@@ -23,14 +23,14 @@ unbalanced data so long as the imbalace is not extreme requires: dat a data
 frame of variables and factors data.columns integer vector indicating which
 columns in dat contain the measurements item.column integer scaler indicating
 which column contains the item labels: items are the top level of variability
-returns: v.within real p*p matrix where p is the number of variables,
-estimate of the within fragment covarience matrix v.between real p*p matrix
+returns: v.within real p\emph{p matrix where p is the number of variables,
+estimate of the within fragment covarience matrix v.between real p}p matrix
 where p is the number of variables - the between items covarience matrix
-n.observations total number of observations - 1*1 integer n.items number of
-items - 1*1 integer item.n integer: number of fragments for each item - of
-length n.fragments item.means real j*p matrix where j is the number of groups
+n.observations total number of observations - 1\emph{1 integer n.items number of
+items - 1}1 integer item.n integer: number of fragments for each item - of
+length n.fragments item.means real j\emph{p matrix where j is the number of groups
 and p number of variables n.vars integer: number of contnuous variables
-overall.means p*1 real vector of means for all variables for all observations
+overall.means p}1 real vector of means for all variables for all observations
 multivariate logical T/F indicates whether multivariate balanced logical T/F
 indicates whether the replication is balanced warn.type character - the type
 of warning(s) issued - crude for the moment notes: works by getting the

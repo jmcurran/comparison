@@ -1,6 +1,16 @@
-## functions to conduct emprical cross entropy calculations these functions are a reworking of Danial Ramos' ECE functions for Matlab (c)
-## David Lucy 22 June 2010 does the plotting
-setMethod("plot", signature(x = "ece"), function(x, ...) {
+#' An S3 plot method for objects of class `ece`
+#' 
+## This function will produce an empirical cross entropy plot (ECE plot).
+#'
+#' @param x an S3 object of class `ece` which is generated from [calc.ece()].
+#' @param \dots other arguments that are passed to the `plot` generic.
+#' 
+#' @author David Lucy
+#' 
+#' @seealso [calc.ece()]
+#' 
+#' @export
+plot.ece = function(x, ...) {
     
     
     # get rid of these eventually
@@ -19,10 +29,10 @@ setMethod("plot", signature(x = "ece"), function(x, ...) {
     
     
     # dereference all the bits from the ece object
-    prior = slot(x, "prior")
-    ece.null = slot(x, "ece.null")
-    ece = slot(x, "ece")
-    ece.cal = slot(x, "ece.cal")
+    prior = x$prior
+    ece.null = x$ece.null
+    ece = x$ece
+    ece.cal = x$ece.cal
     
     x.ordinates = log10(prior/(1 - prior))
     legend.x.position = x.ordinates[1]
@@ -32,7 +42,7 @@ setMethod("plot", signature(x = "ece"), function(x, ...) {
     
     max.y = max(c(ece.null, ece, ece.cal))
     
-    plot(x.ordinates, ece.null, col = null.colour, ylim = c(0, max.y), type = "l", xlab = "", ylab = "")
+    plot(x.ordinates, ece.null, col = null.colour, ylim = c(0, max.y), type = "l", xlab = "", ylab = "", ...)
     
     points(x.ordinates, ece, col = ece.colour, type = "l")
     points(x.ordinates, ece.cal, col = calibrated.colour, type = "l")
@@ -45,5 +55,4 @@ setMethod("plot", signature(x = "ece"), function(x, ...) {
     
     abline(h = 0, lty = 3)
     abline(v = 0, lty = 3)
-    
-})
+}
