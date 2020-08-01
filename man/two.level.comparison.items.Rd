@@ -4,25 +4,35 @@
 \alias{two.level.comparison.items}
 \title{Create a comparison object}
 \usage{
-two.level.comparison.items(dat, data.columns)
+two.level.comparison.items(data, data.columns)
 }
 \arguments{
-\item{dat}{}
+\item{data}{a \code{matrix} or \code{data.frame} of observed properties from either the control item, or the recovered item}
 
-\item{data.columns}{}
+\item{data.columns}{vector of integers giving which columns in \code{dat} are the observations of the properties}
 }
 \value{
 
 }
 \description{
-Makes a comparison.items object. A comparison items object has the data from
+Makes a \code{comparison.items} object.
+}
+\details{
+A \code{comparison.items} object has the data from
 the item to be compared - typically for any specific comparison problem there
 will be two of these objects requires: dat a data frame of variables and
 factors data.columns integer vector indicating which columns in dat contain
 the measurements returns: item.means real p array where p is the number of
 variables item.n integer: number of replicate observations for each item
-n.vars integer: number of contnuous variables multivariate logical T/F
+n.vars integer: number of continuous variables multivariate logical \code{TRUE} or \code{FALSE}
 indicates whether multivariate or not observed the raw observations in the
 form of an i*p matrix where there are i replicated observations and p
-variables missing values: traps and removes NAs - issues warnings about NAs
+variables missing values: traps and removes \code{NA}s - issues warnings about \code{NA}s
+}
+\examples{
+# load Greg Zadora's glass data
+data(glass)
+
+# calculate a compitem object representing the control item
+control = two.level.comparison.items(glass[1:6,], c(7,8,9))
 }

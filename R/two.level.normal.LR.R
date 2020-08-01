@@ -22,15 +22,15 @@
 two.level.normal.LR = function(control, recovered, background) {
     
     # redefine some of the items sent first the object with the population information
-    U = background@v.within
-    C = background@v.between
-    mu = background@overall.means
+    U = background$v.within
+    C = background$v.between
+    mu = background$overall.means
     
     # then the objects with the contro and recovered item information
-    cont.means = control@item.means
-    n.cont = control@n.replicates
-    rec.means = recovered@item.means
-    n.rec = recovered@n.replicates
+    cont.means = control$item.means
+    n.cont = control$n.replicates
+    rec.means = recovered$item.means
+    n.rec = recovered$n.replicates
     
     # weighted mean for the control and recovered item
     y.star = ((n.cont * cont.means) + (n.rec * rec.means))/(n.cont + n.rec)

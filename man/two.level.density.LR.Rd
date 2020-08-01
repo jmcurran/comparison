@@ -7,27 +7,57 @@
 two.level.density.LR(control, recovered, background)
 }
 \arguments{
-\item{control}{}
+\item{control}{a \code{compitem} object with the control item information}
 
-\item{recovered}{}
+\item{recovered}{a \code{compitem} object with the recovered item information}
 
-\item{background}{a compcovar object calculated from the observavions of the population as a whole - calculated from the}
+\item{background}{a \code{compcovar} object with the population information}
 }
 \value{
-
+an estimate of the likelihood ratio
 }
 \description{
-Calculates the likelihood ratio for a multivariate random effects with
-between items modelled as kernel densities This function could still do with
-being made a bit quicker I have tried using apply() type formulations where
-appropriate but they are slightly slower than the counted iterations - I
-suspect the fact that they are dealing with matrix operations has something
-to do with it we're using the prod(eigen(A)$values) form rather than det(A)
-as it seems to be a little more reliable as some of the matricies tend to
-singularity REQUIRES control - a compitem object calculated from the
-observations from the item considered to be the control item - calculated
-from two.level.comparison.items() from the file items_two_level.r recovered -
-a compitem object calculated from the observations from the item considered
-to be the recovered item - calculated from two.level.comparison.items() from
-the file items_two_level.r
+Takes a \code{compitem} object which represents some control item, and a
+\code{compitem} object which represents a recovered item, then uses information
+from a \code{compcovar} object, which represents the
+information from the population, to calculate a likelihood ratio as a measure
+of the evidence given by the observations for the same/different source
+propositions.
+}
+\examples{
+library(comparison)
+# load Greg Zadora's glass data
+data(glass)
+
+# calculate a compcovar object based upon glass
+# using K, Ca and Fe - warning - could take time
+# on slower machines
+Z = two.level.components(glass, c(7,8,9), 1)
+
+# calculate a compitem object representing the control item
+control = two.level.comparison.items(glass[1:6,], c(7,8,9))
+
+# calculate a compitem object representing the recovered item
+# known to be from the same item (item 1)
+recovered.1 = two.level.comparison.items(glass[7:12,], c(7,8,9))
+
+# calculate a compitem object representing the recovered item
+# known to be from a different item (item 2)
+recovered.2 = two.level.comparison.items(glass[19:24,], c(7,8,9))
+
+
+# calculate the likelihood ratio for a known
+# same source comparison - should be 20.59322
+# 2020-08-01 Both this version and the previous version return 20.58967
+lr.1 = two.level.density.LR(control, recovered.1, Z)
+lr.1
+
+# calculate the likelihood ratio for a known
+# different source comparison - should be 0.02901532
+# 2020-08-01 Both this version and the previous version return 0.01161392
+lr.2 = two.level.density.LR(control, recovered.2, Z)
+lr.2
+}
+\references{
+Aitken, C.G.G. & Lucy, D. (2004) Evaluation of trace evidence in the form of multivariate data. \emph{Applied Statistics}: \bold{53}(1); 109-122.
 }

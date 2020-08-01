@@ -192,7 +192,23 @@ two.level.components = function(dat, data.columns, item.column) {
     # n.items)) this (below) is correct by A&L2004 - thanks to Hanjing Zhang and Colin Aitken for this revision
     C = (s.b/(n.items - 1)) - (s.w/((n.observations^2/n.items) - n.observations))
     
-    return(new("compcovar", v.within = U, v.between = C, n.observations = n.observations, n.items = n.items, item.n = item.n, item.means = item.means, 
-        n.vars = n.vars, overall.means = overall.means, multivariate = multivariate.flag, balanced = balanced.flag, s.within = s.w, s.between = s.b, 
-        warn.type = warn.type))
+    # return(new("compcovar", v.within = U, v.between = C, n.observations = n.observations, n.items = n.items, item.n = item.n, item.means = item.means, 
+    #     n.vars = n.vars, overall.means = overall.means, multivariate = multivariate.flag, balanced = balanced.flag, s.within = s.w, s.between = s.b, 
+    #     warn.type = warn.type))
+    
+    obj = list(v.within = U, 
+               v.between = C, 
+               n.observations = n.observations, 
+               n.items = n.items, 
+               item.n = item.n, 
+               item.means = item.means, 
+               n.vars = n.vars, 
+               overall.means = overall.means, 
+               multivariate = multivariate.flag, 
+               balanced = balanced.flag, 
+               s.within = s.w, 
+               s.between = s.b, 
+               warn.type = warn.type)
+    class(obj) = "compvar"
+    return(obj)
 }

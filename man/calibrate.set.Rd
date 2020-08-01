@@ -30,7 +30,7 @@ it has been exported just in case.
 Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis of the information in forensic speaker recognition; IEEE Odyssey.
 }
 \seealso{
-\code{\link[=isotone:gpava]{isotone:gpava()}}, \code{\link[=calc.ece]{calc.ece()}}
+\code{\link[isotone:gpava]{isotone::gpava()}}, \code{\link[=calc.ece]{calc.ece()}}
 }
 \author{
 David Lucy

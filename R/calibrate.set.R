@@ -21,7 +21,7 @@
 #' 
 #' @references Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis of the information in forensic speaker recognition; IEEE Odyssey.
 #' 
-#' @seealso [isotone:gpava()], [calc.ece()]
+#' @seealso [isotone::gpava()], [calc.ece()]
 #' @export
 calibrate.set = function(LR.ss, LR.ds, method = c("raw", "laplace")) {
     
