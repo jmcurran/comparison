@@ -13,7 +13,7 @@ Description: Functions for calculating and evaluating likelihood ratios from uni
 Depends: R (>= 3.5.0)
 Imports: isotone
 License: GPL (>=2)
-URL: http://https://github.com/jmcurran/comparison
+URL: https://github.com/jmcurran/comparison
 LazyLoad: yes
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
