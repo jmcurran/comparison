@@ -2,32 +2,23 @@
 % Please edit documentation in R/two.level.comparison.items.R
 \name{two.level.comparison.items}
 \alias{two.level.comparison.items}
-\title{Create a comparison object}
+\title{Create a \code{compitem} object.}
 \usage{
 two.level.comparison.items(data, data.columns)
 }
 \arguments{
-\item{data}{a \code{matrix} or \code{data.frame} of observed properties from either the control item, or the recovered item}
+\item{data}{a \code{matrix} or \code{data.frame} of observed properties from either
+the control item, or the recovered item}
 
-\item{data.columns}{vector of integers giving which columns in \code{dat} are the observations of the properties}
+\item{data.columns}{vector of integers giving which columns in \code{data} are
+the observations of the properties}
 }
 \value{
-
+an object of class \code{compitem}
 }
 \description{
-Makes a \code{comparison.items} object.
-}
-\details{
-A \code{comparison.items} object has the data from
-the item to be compared - typically for any specific comparison problem there
-will be two of these objects requires: dat a data frame of variables and
-factors data.columns integer vector indicating which columns in dat contain
-the measurements returns: item.means real p array where p is the number of
-variables item.n integer: number of replicate observations for each item
-n.vars integer: number of continuous variables multivariate logical \code{TRUE} or \code{FALSE}
-indicates whether multivariate or not observed the raw observations in the
-form of an i*p matrix where there are i replicated observations and p
-variables missing values: traps and removes \code{NA}s - issues warnings about \code{NA}s
+This function creates a \code{compitem} object from a \code{data.frame} or \code{matrix} of
+observations from an item to be deemed a control, or a recovered, item.
 }
 \examples{
 # load Greg Zadora's glass data

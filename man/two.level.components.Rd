@@ -4,38 +4,35 @@
 \alias{two.level.components}
 \title{Compute integrated means and covariances}
 \usage{
-two.level.components(dat, data.columns, item.column)
+two.level.components(data, data.columns, item.column)
 }
 \arguments{
-\item{dat}{}
+\item{data}{a \code{matrix}, or \code{data.frame}, of observations, with cases in rows,
+and properties as columns}
 
-\item{data.columns}{}
+\item{data.columns}{a \code{vector} indicating which columns are the properties}
 
-\item{item.column}{}
+\item{item.column}{an integer indicating which column gives the item}
 }
 \value{
-
+an object of class \code{compvar}
 }
 \description{
-Compute integrated means and covariances function does univariate and
-multivariate in one function this function may be used for balanced and
-unbalanced data so long as the imbalace is not extreme requires: dat a data
-frame of variables and factors data.columns integer vector indicating which
-columns in dat contain the measurements item.column integer scaler indicating
-which column contains the item labels: items are the top level of variability
-returns: v.within real p\emph{p matrix where p is the number of variables,
-estimate of the within fragment covarience matrix v.between real p}p matrix
-where p is the number of variables - the between items covarience matrix
-n.observations total number of observations - 1\emph{1 integer n.items number of
-items - 1}1 integer item.n integer: number of fragments for each item - of
-length n.fragments item.means real j\emph{p matrix where j is the number of groups
-and p number of variables n.vars integer: number of contnuous variables
-overall.means p}1 real vector of means for all variables for all observations
-multivariate logical T/F indicates whether multivariate balanced logical T/F
-indicates whether the replication is balanced warn.type character - the type
-of warning(s) issued - crude for the moment notes: works by getting the
-nested means first, then calculating the covariance components from these
-using weighted estimates missing values: crudely handled by mean(x,
-na.rm=TRUE) to stop any NA's from crashing the function - not very well
-implemented in this version
+Takes a large sample from the background population and calculates the within
+and between covariance matrices, a vector of means, a vector of the counts of
+replicates for each item from the sample, and other bits needed to make up a
+\code{compcovar} object.
+}
+\details{
+Uses ML estimation at the moment - this will almost certainly change in the future and
+hopefully allow regularisation methods to get a more stable (and non-singular) estimate.
+}
+\examples{
+# load Greg Zadora's glass data
+data(glass)
+
+# calculate a compcovar object based upon glas
+# using K, Ca and Fe - warning - could take time
+# on slower machines
+Z = two.level.components(glass, c(7,8,9), 1)
 }

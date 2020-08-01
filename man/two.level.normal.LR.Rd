@@ -2,28 +2,66 @@
 % Please edit documentation in R/two.level.normal.LR.R
 \name{two.level.normal.LR}
 \alias{two.level.normal.LR}
-\title{Calculate a two-level likelihood ratio}
+\title{Likelihood ratio calculation - normal}
 \usage{
 two.level.normal.LR(control, recovered, background)
 }
 \arguments{
-\item{control}{}
+\item{control}{a \code{compitem} object with the control item information}
 
-\item{recovered}{}
+\item{recovered}{a \code{compitem} object with the recovered item information}
 
-\item{background}{a \code{compcovar} object calculated from the observations of the population as a whole -
-calculated from the two.level.components() function from the file
-components_two_level.r RETURNS LR - an estimate of the likelihood ratio ' '}
+\item{background}{a \code{compcovar} object with the population information}
 }
 \value{
-
+an estimate of the likelihood ratio
 }
 \description{
-Calculates the likelihood ratio for a multivariate random effect model with
-between items modelled normal rather than kernal REQUIRES control - a
-compitem object calculated from the observations from the item considered to
-be the control item - calculated from two.level.comparison.items() from the
-file items_two_level.r recovered - a compitem object calculated from the
-observations from the item considered to be the recovered item - calculated
-from two.level.comparison.items() from the file items_two_level.r
+Takes a \code{compitem} object which represents some control item, and a
+\code{compitem} object which represents a recovered item, then uses information
+from a \code{compcovar} object, which represents the information from the
+population, to calculate a likelihood ratio as a measure of the evidence
+given by the observations for the same/different source propositions.
+}
+\details{
+Does the likelihood ratio calculations for a two-level model
+assuming that the between item distribution is uni/multivariate normal.
+}
+\examples{
+# load Greg Zadora's glass data
+data(glass)
+
+# calculate a compcovar object based upon glass
+# using K, Ca and Fe - warning - could take time
+# on slower machines
+Z <- two.level.components(glass, c(7,8,9), 1)
+
+# calculate a compitem object representing the control item
+control <- two.level.comparison.items(glass[1:6,], c(7,8,9))
+
+# calculate a compitem object representing the recovered item
+# known to be from the same item (item 1)
+recovered.1 <- two.level.comparison.items(glass[7:12,], c(7,8,9))
+
+# calculate a compitem object representing the recovered item
+# known to be from a different item (item 2)
+recovered.2 <- two.level.comparison.items(glass[19:24,], c(7,8,9))
+
+
+# calculate the likelihood ratio for a known
+# same source comparison - should be 51.16539
+# This value is 51.14243 in this version and the last version David wrote (1.0-4)
+lr.1 <- two.level.normal.LR(control, recovered.1, Z)
+lr.1
+# calculate the likelihood ratio for a known
+# different source comparison - should be 0.02901532
+# This vsalue is 0.02899908 in this version and the last version David wrote (1.0-4)
+lr.2 <- two.level.normal.LR(control, recovered.2, Z)
+lr.2
+}
+\references{
+Aitken, C.G.G. & Lucy, D. (2004) Evaluation of trace evidence in the form of multivariate data. \emph{Applied Statistics}: \bold{53}(1); 109-122.
+}
+\author{
+Agnieszka Martyna and David Lucy
 }

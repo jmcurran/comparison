@@ -1,51 +1,68 @@
 #' Compute integrated means and covariances
 #'
-#' Compute integrated means and covariances function does univariate and
-#' multivariate in one function this function may be used for balanced and
-#' unbalanced data so long as the imbalace is not extreme requires: dat a data
-#' frame of variables and factors data.columns integer vector indicating which
-#' columns in dat contain the measurements item.column integer scaler indicating
-#' which column contains the item labels: items are the top level of variability
-#' returns: v.within real p*p matrix where p is the number of variables,
-#' estimate of the within fragment covarience matrix v.between real p*p matrix
-#' where p is the number of variables - the between items covarience matrix
-#' n.observations total number of observations - 1*1 integer n.items number of
-#' items - 1*1 integer item.n integer: number of fragments for each item - of
-#' length n.fragments item.means real j*p matrix where j is the number of groups
-#' and p number of variables n.vars integer: number of contnuous variables
-#' overall.means p*1 real vector of means for all variables for all observations
-#' multivariate logical T/F indicates whether multivariate balanced logical T/F
-#' indicates whether the replication is balanced warn.type character - the type
-#' of warning(s) issued - crude for the moment notes: works by getting the
-#' nested means first, then calculating the covariance components from these
-#' using weighted estimates missing values: crudely handled by mean(x,
-#' na.rm=TRUE) to stop any NA's from crashing the function - not very well
-#' implemented in this version
-
+#' Takes a large sample from the background population and calculates the within
+#' and between covariance matrices, a vector of means, a vector of the counts of
+#' replicates for each item from the sample, and other bits needed to make up a
+#' `compcovar` object.
 #'
-#' @param dat 
-#' @param data.columns 
-#' @param item.column 
+#' @param data a `matrix`, or `data.frame`, of observations, with cases in rows,
+#'   and properties as columns
+#' @param data.columns a `vector` indicating which columns are the properties
+#' @param item.column an integer indicating which column gives the item
 #'
-#' @return
+#' @details Uses ML estimation at the moment - this will almost certainly change in the future and
+#' hopefully allow regularisation methods to get a more stable (and non-singular) estimate.
+#'
+#' @return an object of class `compvar`
 #' @export
 #'
 #' @examples
-two.level.components = function(dat, data.columns, item.column) {
+#' # load Greg Zadora's glass data
+#' data(glass)
+#' 
+#' # calculate a compcovar object based upon glas
+#' # using K, Ca and Fe - warning - could take time
+#' # on slower machines
+#' Z = two.level.components(glass, c(7,8,9), 1)
+two.level.components = function(data, data.columns, item.column) {
+    ## Compute integrated means and covariances function does univariate and
+    ## multivariate in one function this function may be used for balanced and
+    ## unbalanced data so long as the imbalace is not extreme requires: dat a data
+    ## frame of variables and factors data.columns integer vector indicating which
+    ## columns in dat contain the measurements item.column integer scaler indicating
+    ## which column contains the item labels: items are the top level of variability
+    ## returns: v.within real p*p matrix where p is the number of variables,
+    ## estimate of the within fragment covarience matrix v.between real p*p matrix
+    ## where p is the number of variables - the between items covarience matrix
+    ## n.observations total number of observations - 1*1 integer n.items number of
+    ## items - 1*1 integer item.n integer: number of fragments for each item - of
+    ## length n.fragments item.means real j*p matrix where j is the number of groups
+    ## and p number of variables n.vars integer: number of contnuous variables
+    ## overall.means p*1 real vector of means for all variables for all observations
+    ## multivariate logical T/F indicates whether multivariate balanced logical T/F
+    ## indicates whether the replication is balanced warn.type character - the type
+    ## of warning(s) issued - crude for the moment notes: works by getting the
+    ## nested means first, then calculating the covariance components from these
+    ## using weighted estimates missing values: crudely handled by mean(x,
+    ## na.rm=TRUE) to stop any NA's from crashing the function - not very well
+    ## implemented in this version
+    
+    
+    
     # set the warn.type as none - then add in as warnings accrue
     warn.type = "none"
     
     ## COMMON ## clean the data a bit - get rid of NA rows - crude and may lead to cases with n<2 which is tested for later
-    if (any(is.na(dat))) {
+    if (any(is.na(data))) {
         warning("data contains NAs - cases removed", immediate. = FALSE, call. = FALSE)
         warn.type = "NAs"
-        dat = dat[complete.cases(dat), ]
+        data = data[complete.cases(data), ]
     }
     
     
     
     # definitions and declarations
-    vars = names(dat)[data.columns]
+    vars = names(data)[data.columns]
     n.vars = length(vars)
     
     multivariate.flag = TRUE
@@ -54,9 +71,9 @@ two.level.components = function(dat, data.columns, item.column) {
     }
     
     
-    n.observations = nrow(dat)
+    n.observations = nrow(data)
     
-    items = unique(dat[, item.column])
+    items = unique(data[, item.column])
     n.items = length(items)
     
     item.n = matrix(0, nrow = n.items, ncol = 1)
@@ -71,10 +88,10 @@ two.level.components = function(dat, data.columns, item.column) {
     # means for all cases not affected by imbalance - names attribute akward overall mean calculation now even more awkward as comMeans now
     # fussy about getting a matrix rather than a vector so colMeans OK if multivariate - otherwise mean
     if (multivariate.flag) {
-        overall.means = colMeans(dat[, data.columns], na.rm = TRUE)
+        overall.means = colMeans(data[, data.columns], na.rm = TRUE)
     }
     if (!multivariate.flag) {
-        overall.means = mean(dat[, data.columns], na.rm = TRUE)
+        overall.means = mean(data[, data.columns], na.rm = TRUE)
         names(overall.means) = vars
     }
     # overall.means = colMeans(dat[,data.columns], na.rm=TRUE); if(!multivariate.flag){names(overall.means) = vars}
@@ -99,7 +116,7 @@ two.level.components = function(dat, data.columns, item.column) {
     if (multivariate.flag) {
         # pick out the observations for each level of the grouping factor then get the mean and the sum of squared deviations (S.w)
         for (ctr in 1:n.items) {
-            current.item = dat[dat[, item.column] == items[ctr], ]
+            current.item = data[data[, item.column] == items[ctr], ]
             item.n[ctr] = nrow(current.item)
             
             # trap cases with too few replicates to calculate a mean from - fatal if it occurs
@@ -138,7 +155,7 @@ two.level.components = function(dat, data.columns, item.column) {
         s.star = 0
         
         for (ctr in 1:n.items) {
-            current.item = dat[dat[, item.column] == items[ctr], ]
+            current.item = data[data[, item.column] == items[ctr], ]
             item.n[ctr] = nrow(current.item)
             
             

@@ -15,8 +15,8 @@ calibrate.set(LR.ss, LR.ds, method = c("raw", "laplace"))
 }
 \value{
 a \code{list} with two items: \describe{
-\item{LR.cal.ss}{calibrated lrs for the comparison for same set}
-\item{LR.cal.ds}{calibrated lrs for the comparison for different set}
+\item{LR.cal.ss}{calibrated LRs for the comparison for same set}
+\item{LR.cal.ds}{calibrated LRs for the comparison for different set}
 }
 }
 \description{

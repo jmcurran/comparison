@@ -10,13 +10,13 @@ a \code{data.frame} with 2400 rows and 9 columns.
 \item{item}{factor}{200 levels - which item the measurements came from}
 \item{fragment}{factor}{4 levels - which of the four fragments from each item the observations were made
 upon}
-\item{logNaO}{numeric}{log of sodium concentration to oxygen concentration }
-\item{logMgO}{numeric}{log of magnesium concentration to oxygen concentration }
-\item{logAlO}{numeric}{log of aluminium concentration to oxygen concentration }
+\item{logNaO}{numeric}{log of sodium concentration to oxygen concentration}
+\item{logMgO}{numeric}{log of magnesium concentration to oxygen concentration}
+\item{logAlO}{numeric}{log of aluminium concentration to oxygen concentration}
 \item{logSiO}{numeric}{log of silicon concentration to oxygen concentration}
-\item{logKO} {numeric}{log of potassium concentration to oxygen concentration }
-\item{logCaO}{numeric}{log of calcium concentration to oxygen concentration }
-\item{logFeO}{numeric}{log of iron concentration to oxygen concentration }
+\item{logKO}{numeric}{log of potassium concentration to oxygen concentration}
+\item{logCaO}{numeric}{log of calcium concentration to oxygen concentration}
+\item{logFeO}{numeric}{log of iron concentration to oxygen concentration}
 }
 }
 \source{

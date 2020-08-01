@@ -5,10 +5,13 @@ Title: Multivariate likelihood ratio calculation and evaluation
 Authors@R: c(person("David", "Lucy", role = "aut",
                     email = "d.lucy@lancaster.ac.uk"),
              person("James", "Curran", role = c("aut", "cre"),
-                    email = "j.curran@auckland.ac.nz"))
+                    email = "j.curran@auckland.ac.nz"),
+             person("Agnieszka", "Martyna", role = "aut",
+                    email = "ag.rzepecka@gmail.com"))
 Encoding: UTF-8
-Description: Functions for calculating and evaluating likelihood ratios from uni/multivariate continuous observations
-Imports: isotone, methods
+Description: Functions for calculating and evaluating likelihood ratios from uni/multivariate continuous observations.
+Depends: R (>= 3.5.0)
+Imports: isotone
 License: GPL (>=2)
 URL: http://https://github.com/jmcurran/comparison
 LazyLoad: yes

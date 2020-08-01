@@ -14,9 +14,9 @@
 #' 
 #' @author David Lucy
 #'
-#' @return a \code{list} with two items: \describe{
-#'   \item{LR.cal.ss}{calibrated lrs for the comparison for same set}
-#'   \item{LR.cal.ds}{calibrated lrs for the comparison for different set}
+#' @return a `list` with two items: \describe{
+#'   \item{LR.cal.ss}{calibrated LRs for the comparison for same set}
+#'   \item{LR.cal.ds}{calibrated LRs for the comparison for different set}
 #' }
 #' 
 #' @references Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis of the information in forensic speaker recognition; IEEE Odyssey.
@@ -73,7 +73,8 @@ calibrate.set = function(LR.ss, LR.ds, method = c("raw", "laplace")) {
     # prior odds
     prior.odds = n.ss / n.ds
     
-    # arbitrarily set a cutoff to prevent division by zero errors when we calculate the odds not very keen on this - don't think it is needed
+    # arbitrarily set a cutoff to prevent division by zero errors when we
+    # calculate the odds not very keen on this - don't think it is needed
     # calibrated.posterior.probabilities[calibrated.posterior.probabilities > cutoff] = cutoff
     
     log.calibrated.posterior.LRs = log(calibrated.posterior.probabilities/(1 - calibrated.posterior.probabilities)) - log(prior.odds)

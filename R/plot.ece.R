@@ -9,6 +9,8 @@
 #' 
 #' @seealso [calc.ece()]
 #' 
+#' @importFrom graphics abline legend mtext par plot points
+#' 
 #' @export
 plot.ece = function(x, ...) {
     
