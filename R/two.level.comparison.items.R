@@ -34,7 +34,8 @@ two.level.comparison.items = function(data, data.columns) {
     # set the warn.type as none - then add in as warnings accrue
     warn.type = "none"
     
-    # clean the data a bit - get rid of NA rows - crude and may lead to cases with n<2 which is tested for later
+    # clean the data a bit - get rid of NA rows - crude and may lead to cases
+    # with n < 2 which is tested for later
     if (any(is.na(data))) {
         warning("data contains NAs - cases removed", immediate. = FALSE, call. = FALSE)
         warn.type = "NAs"

@@ -20,20 +20,20 @@
 #' # load Greg Zadora's glass data
 #' data(glass)
 #' 
-#' # calculate a compcovar object based upon glas
+#' # calculate a compcovar object based upon glass
 #' # using K, Ca and Fe - warning - could take time
 #' # on slower machines
 #' Z = two.level.components(glass, c(7,8,9), 1)
 two.level.components = function(data, data.columns, item.column) {
     ## Compute integrated means and covariances function does univariate and
-    ## multivariate in one function this function may be used for balanced and
-    ## unbalanced data so long as the imbalace is not extreme requires: dat a data
+    ## multivariate in one function. This function may be used for balanced and
+    ## unbalanced data so long as the imbalance is not extreme. Requires: data, a data
     ## frame of variables and factors data.columns integer vector indicating which
-    ## columns in dat contain the measurements item.column integer scaler indicating
+    ## columns in data contain the measurements item.column integer scalar indicating
     ## which column contains the item labels: items are the top level of variability
     ## returns: v.within real p*p matrix where p is the number of variables,
-    ## estimate of the within fragment covarience matrix v.between real p*p matrix
-    ## where p is the number of variables - the between items covarience matrix
+    ## estimate of the within fragment covariance matrix v.between real p*p matrix
+    ## where p is the number of variables - the between items covariance matrix
     ## n.observations total number of observations - 1*1 integer n.items number of
     ## items - 1*1 integer item.n integer: number of fragments for each item - of
     ## length n.fragments item.means real j*p matrix where j is the number of groups
@@ -52,7 +52,8 @@ two.level.components = function(data, data.columns, item.column) {
     # set the warn.type as none - then add in as warnings accrue
     warn.type = "none"
     
-    ## COMMON ## clean the data a bit - get rid of NA rows - crude and may lead to cases with n<2 which is tested for later
+    ## COMMON 
+    ## clean the data a bit - get rid of NA rows - crude and may lead to cases with n<2 which is tested for later
     if (any(is.na(data))) {
         warning("data contains NAs - cases removed", immediate. = FALSE, call. = FALSE)
         warn.type = "NAs"
@@ -65,10 +66,7 @@ two.level.components = function(data, data.columns, item.column) {
     vars = names(data)[data.columns]
     n.vars = length(vars)
     
-    multivariate.flag = TRUE
-    if (n.vars == 1) {
-        multivariate.flag = FALSE
-    }
+    multivariate.flag = n.vars > 1
     
     
     n.observations = nrow(data)
@@ -85,12 +83,13 @@ two.level.components = function(data, data.columns, item.column) {
     colnames(item.means) = vars
     
     
-    # means for all cases not affected by imbalance - names attribute akward overall mean calculation now even more awkward as comMeans now
-    # fussy about getting a matrix rather than a vector so colMeans OK if multivariate - otherwise mean
+    # means for all cases not affected by imbalance - names attribute awkward
+    # overall mean calculation now even more awkward as comMeans now fussy about
+    # getting a matrix rather than a vector so colMeans OK if multivariate -
+    # otherwise mean
     if (multivariate.flag) {
         overall.means = colMeans(data[, data.columns], na.rm = TRUE)
-    }
-    if (!multivariate.flag) {
+    }else{
         overall.means = mean(data[, data.columns], na.rm = TRUE)
         names(overall.means) = vars
     }

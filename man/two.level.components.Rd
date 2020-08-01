@@ -31,7 +31,7 @@ hopefully allow regularisation methods to get a more stable (and non-singular) e
 # load Greg Zadora's glass data
 data(glass)
 
-# calculate a compcovar object based upon glas
+# calculate a compcovar object based upon glass
 # using K, Ca and Fe - warning - could take time
 # on slower machines
 Z = two.level.components(glass, c(7,8,9), 1)
