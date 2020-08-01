@@ -9,13 +9,15 @@ multivariate evidence.}
 This package is for computing the \emph{weight of the evidence}, i.e. the
 \emph{likelihood ratio (LR)} for trace evidence which has been quantified with
 some instrument. For example a forensic scientist might be have determined
-the refractive indices (RIs) of fragments of glass taken from a crime scene and
+the refractive indices of fragments of glass taken from a crime scene and
 fragments of glass recovered from the clothing of the suspected breaker. This
 package evaluates the probability (density) of the evidence, \eqn{E}, (the RI
 values from the two samples) under the hypothesis \eqn{H_p}{Hp} that they
 originated from the same source, and alternatively under the hypothesis
 \eqn{H_d}{Hd} that they originated from another source. The LR is the ratio of
 these two quantities, i.e. \deqn{LR = \frac{p(E|H_p)}{p(E|H_d)}}{LR = p(E|Hp) / pr(E|Hd)}.
+A \eqn{LR} which is greater than one indicates that the evidence supports \eqn{H_p}{Hp}, and a
+\eqn{LR} which is less than one indicates that the evidence supports \eqn{H_d}{Hd}.
 }
 \details{
 The computation can use either univariate or multivariate observations of a

@@ -20,16 +20,17 @@ a \code{list} with two items: \describe{
 }
 }
 \description{
-Calculates and returns the calibrated set of `ideal' LRs from the
-observed LRs using the penalised adjacent violators algotrthm This is very
-much a rewrite of Nico Brummer's optloglr() function for Matlab, only for R
-draws heavily on Nico Brummer's work.
+Calculates and returns the calibrated set of \verb{ideal' LRs from the observed LRs using the penalised adjacent violators algorithm. This is very much a rewrite of Nico Brummer's }optloglr()` function for Matlab.
+}
+\details{
+This is an internal function, and is not meant to be called directly. However
+it has been exported just in case.
 }
 \references{
 Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis of the information in forensic speaker recognition; IEEE Odyssey.
 }
 \seealso{
-\code{\link[isotone]{gpava}}, #' \code{\link{calibrate.set}}, #' \code{\link{calc.ece}}
+\code{\link[=isotone:gpava]{isotone:gpava()}}, \code{\link[=calc.ece]{calc.ece()}}
 }
 \author{
 David Lucy

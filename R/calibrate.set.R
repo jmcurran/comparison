@@ -1,14 +1,16 @@
 #' Calculate the calibrated set of idea LRs
 #'
 #' Calculates and returns the calibrated set of `ideal' LRs from the
-#' observed LRs using the penalised adjacent violators algotrthm This is very
-#' much a rewrite of Nico Brummer's optloglr() function for Matlab, only for R
-#' draws heavily on Nico Brummer's work.
+#' observed LRs using the penalised adjacent violators algorithm. This is very
+#' much a rewrite of Nico Brummer's `optloglr()` function for Matlab.
+#' 
+#' This is an internal function, and is not meant to be called directly. However
+#' it has been exported just in case.
 #' 
 #'
 #' @param LR.ss a vector of likelihood ratios for the comparisons of items known to be from the same source
 #' @param LR.ds a vector of likelihood ratios for the comparisons of items known to be from different sources
-#' @param method the method used to perform the calculation, either \code{"raw"} or \code{"laplace"}
+#' @param method the method used to perform the calculation, either `"raw"` or `"laplace"`
 #' 
 #' @author David Lucy
 #'
@@ -19,10 +21,8 @@
 #' 
 #' @references Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis of the information in forensic speaker recognition; IEEE Odyssey.
 #' 
-#' @seealso \code{\link[isotone]{gpava}}, #' \code{\link{calibrate.set}}, #' \code{\link{calc.ece}}
+#' @seealso [isotone:gpava()], [calc.ece()]
 #' @export
-#'
-#' @examples
 calibrate.set = function(LR.ss, LR.ds, method = c("raw", "laplace")) {
     
     method = match.arg(method)
@@ -52,7 +52,7 @@ calibrate.set = function(LR.ss, LR.ds, method = c("raw", "laplace")) {
     }
     
     
-    # gpava doesn't really care what you send it as the first arguement so long as it is ascending and of the appropriate length - here I just
+    # gpava doesn't really care what you send it as the first argument so long as it is ascending and of the appropriate length - here I just
     # sent an integer array
     if (method == "raw") {
         calibrated.set = gpava(1:n, ordered.indicator.array)
