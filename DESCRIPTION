@@ -1,7 +1,7 @@
 Package: comparison
 Version: 1.0-5
-Date: 2020-07-30
-Title: Multivariate likelihood ratio calculation and evaluation
+Date: 2020-08-01
+Title: Multivariate Likelihood Ratio Calculation and Evaluation
 Authors@R: c(person("David", "Lucy", role = "aut",
                     email = "d.lucy@lancaster.ac.uk"),
              person("James", "Curran", role = c("aut", "cre"),
@@ -13,7 +13,7 @@ Description: Functions for calculating and evaluating likelihood ratios from uni
 Depends: R (>= 3.5.0)
 Imports: isotone
 License: GPL (>=2)
-URL: https://github.com/jmcurran/comparison
+URL: github.com/jmcurran/comparison
 LazyLoad: yes
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1

@@ -23,7 +23,7 @@ upon}
 Grzegorz Zadora \href{http://ies.krakow.pl/}{Institute of Forensic Research}, Krakow, Poland.
 }
 \usage{
-glass
+data(glass)
 }
 \description{
 These data are from Grzegorz (Greg) Zadora at the \href{http://ies.krakow.pl/}{Institute of Forensic Research} in

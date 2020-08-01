@@ -33,6 +33,8 @@
 #'   \item{logCaO}{numeric}{log of calcium concentration to oxygen concentration}
 #'   \item{logFeO}{numeric}{log of iron concentration to oxygen concentration}
 #' }
+#' @usage 
+#' data(glass)
 #' @references Aitken, C.G.G. Zadora, G. & Lucy, D. (2007) A Two-Level Model for
 #'   Evidence Evaluation. \emph{Journal of Forensic Sciences}: \bold{52}(2);
 #'   412-419.
