@@ -26,7 +26,7 @@
 #' 
 #' # example using the formula interface
 #' controlMeasurements = subset(glass, item == "s1")
-#' control = makeCompItem(item ~ logKO + logCaO+ logFeO, data = controlMeasurements)
+#' control = makeCompItem(item ~ logKO + logCaO + logFeO, data = controlMeasurements)
 #'  
 makeCompItem = function(x, ...){
   UseMethod("makeCompItem")

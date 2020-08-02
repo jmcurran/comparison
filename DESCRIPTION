@@ -1,6 +1,6 @@
 Package: comparison
-Version: 1.0-5
-Date: 2020-08-01
+Version: 1.0-6
+Date: 2020-08-02
 Title: Multivariate Likelihood Ratio Calculation and Evaluation
 Authors@R: c(person("David", "Lucy", role = "aut",
                     email = "d.lucy@lancaster.ac.uk"),
