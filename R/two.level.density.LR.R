@@ -8,9 +8,9 @@
 #' of the evidence given by the observations for the same/different source
 #' propositions.
 #' 
-#' @param control a `compitem` object with the control item information
-#' @param recovered a `compitem` object with the recovered item information
-#' @param background a `compcovar` object with the population information
+#' @param control a `compitem` object with the control item information.
+#' @param recovered a `compitem` object with the recovered item information.
+#' @param background a `compcovar` object with the population information.
 #'
 #' @return an estimate of the likelihood ratio
 #' 
@@ -68,8 +68,9 @@ two.level.density.LR = function(control, recovered, background) {
     
     
     
-    ## calculates the difference between two numbers intended for use as an apply() functionette x is a matrix from whose rows we wish to
-    ## subtract y y is a vector
+    ## calculates the difference between two numbers intended for use as an
+    ## apply() functionette x is a matrix from whose rows we wish to subtract y
+    ## y is a vector
     minu = function(x, y) {
         y - x
     }

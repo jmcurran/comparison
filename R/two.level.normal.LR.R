@@ -47,7 +47,7 @@
 #' lr.1
 #' # calculate the likelihood ratio for a known
 #' # different source comparison - should be 0.02901532
-#' # This vsalue is 0.02899908 in this version and the last version David wrote (1.0-4)
+#' # This value is 0.02899908 in this version and the last version David wrote (1.0-4)
 #' lr.2 <- two.level.normal.LR(control, recovered.2, Z)
 #' lr.2
 two.level.normal.LR = function(control, recovered, background) {
@@ -84,14 +84,18 @@ two.level.normal.LR = function(control, recovered, background) {
     diff.y.star.mu = y.star - mu
     
     
-    # This code independently written by Agnieszka Rzepecka of the IFR, and tidied up a bit by David Lucy output agrees with previous efforts -
-    # thus we develop some confidence it's doing the right thing I keep on expecting it to fall over in the univariate case but it seems not to
-    # so we'll use it until it starts to be a problem Numerator calculation
-    nom1 = exp(-1/2 * t(diff.cont.rec) %*% solve(U/n.cont + U/n.rec) %*% (diff.cont.rec)) * (det(U/n.cont + U/n.rec))^(-1/2)
+    ## This code independently written by Agnieszka Rzepecka of the IFR, and
+    ## tidied up a bit by David Lucy output agrees with previous efforts - thus
+    ## we develop some confidence it's doing the right thing I keep on expecting
+    ## it to fall over in the univariate case but it seems not to so we'll use it
+    ## until it starts to be a problem 
+    
+    ## Numerator calculation
+    nom1 = exp(-1/2 * t(diff.cont.rec) %*% solve(U/n.cont + U/n.rec) %*% (diff.cont.rec)) / sqrt(det(U/n.cont + U/n.rec))
     nom2 = exp(-1/2 * t(diff.y.star.mu) %*% solve(U/(n.cont + n.rec) + C) %*% (diff.y.star.mu)) * (det(U/(n.cont + n.rec) + C))^(-1/2)
     nom = nom1 * nom2
     
-    # Denominator calculation
+    ## Denominator calculation
     denom1 = exp(-1/2 * t(diff.cont.mu) %*% solve(U/n.cont + C) %*% (diff.cont.mu)) * (det(U/n.cont + C))^(-1/2)
     denom2 = exp(-1/2 * t(diff.rec.mu) %*% solve(U/n.rec + C) %*% (diff.rec.mu)) * (det(U/n.rec + C))^(-1/2)
     denom = denom1 * denom2

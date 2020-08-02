@@ -7,11 +7,11 @@
 two.level.density.LR(control, recovered, background)
 }
 \arguments{
-\item{control}{a \code{compitem} object with the control item information}
+\item{control}{a \code{compitem} object with the control item information.}
 
-\item{recovered}{a \code{compitem} object with the recovered item information}
+\item{recovered}{a \code{compitem} object with the recovered item information.}
 
-\item{background}{a \code{compcovar} object with the population information}
+\item{background}{a \code{compcovar} object with the population information.}
 }
 \value{
 an estimate of the likelihood ratio

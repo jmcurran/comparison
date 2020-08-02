@@ -55,7 +55,7 @@ lr.1 <- two.level.normal.LR(control, recovered.1, Z)
 lr.1
 # calculate the likelihood ratio for a known
 # different source comparison - should be 0.02901532
-# This vsalue is 0.02899908 in this version and the last version David wrote (1.0-4)
+# This value is 0.02899908 in this version and the last version David wrote (1.0-4)
 lr.2 <- two.level.normal.LR(control, recovered.2, Z)
 lr.2
 }
