@@ -2,9 +2,12 @@
 % Please edit documentation in R/calcLR.R
 \name{calcLR}
 \alias{calcLR}
+\alias{calcLR_MVN}
 \title{Calculate the likelihood ratio}
 \usage{
 calcLR(control, recovered, background, method = c("mvn", "kde", "lindley"))
+
+calcLR_MVN(control, recovered, background)
 }
 \arguments{
 \item{control}{a \code{compitem} object with the control item information.}
@@ -27,6 +30,11 @@ from a \code{compcovar} object, which represents the information from the
 population, to calculate a likelihood ratio (LR) as a measure of the evidence
 given by the observations for the same/different source propositions.
 }
+\section{Functions}{
+\itemize{
+\item \code{calcLR_MVN}: Use a multivariate normal approximation to compute the LR
+}}
+
 \references{
 Aitken, C.G.G. & Lucy, D. (2004) Evaluation of trace evidence in the form of multivariate data. \emph{Applied Statistics}: \bold{53}(1); 109-122.
 }
