@@ -11,6 +11,8 @@
 #'
 #' @return an object of class `compitem`
 #' 
+#' @author David Lucy and James Curran
+#' 
 #' @importFrom stats complete.cases
 #' @export
 #'
@@ -19,8 +21,13 @@
 #' data(glass)
 #'
 #' # calculate a compitem object representing the control item
-#' controlMeasurements = glass[glass$item == "s1", c("logKO", "logCaO", "logFeO")]
+#' controlMeasurements = subset(glass, item == "s1", select = c(logKO, logCaO, logFeO))
 #' control = makeCompItem(controlMeasurements)
+#' 
+#' # example using the formula interface
+#' controlMeasurements = subset(glass, item == "s1")
+#' control = makeCompItem(item ~ logKO + logCaO+ logFeO, data = controlMeasurements)
+#'  
 makeCompItem = function(x, ...){
   UseMethod("makeCompItem")
 }
@@ -70,4 +77,20 @@ makeCompItem.default = function(x){
              warn.type = warn.type)
   class(obj) = "compitem"
   return(obj)
+}
+
+#' @describeIn makeCompItem Create a `compitem` object using a formula.
+#' @export
+makeCompItem.formula = function(x, data =  NULL, ...){
+    if(missing(x) || class(x) != "formula")
+      stop("missing or incorrect formula")
+    
+    form = x
+
+    mf = model.frame(form, data)
+    
+    group = model.response(mf)
+    variables = mf[,-1, drop = FALSE]
+    
+    makeCompItem(variables, ...)
 }

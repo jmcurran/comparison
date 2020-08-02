@@ -15,6 +15,10 @@ the observations of the properties}
 }
 \value{
 an object of class \code{compitem}
+\subsection{Note}{
+
+This function is deprecated and will eventually be replaced by \code{\link[=makeCompItem]{makeCompItem()}}.
+}
 }
 \description{
 This function creates a \code{compitem} object from a \code{data.frame} or \code{matrix} of

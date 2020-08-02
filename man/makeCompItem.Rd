@@ -2,9 +2,12 @@
 % Please edit documentation in R/makeCompItem.R
 \name{makeCompItem}
 \alias{makeCompItem}
+\alias{makeCompItem.formula}
 \title{Create a \code{compitem} object.}
 \usage{
 makeCompItem(x, ...)
+
+\method{makeCompItem}{formula}(x, data = NULL, ...)
 }
 \arguments{
 \item{x}{a \code{matrix} or \code{data.frame} or a \code{formula}}
@@ -21,11 +24,24 @@ on items to be deemed control, or a recovered, items. For example,
 a set of elemental concentration measurements on a sample of glass
 fragments taken from a crime scene source such as a window.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{formula}: Create a \code{compitem} object using a formula.
+}}
+
 \examples{
 # load Greg Zadora's glass data
 data(glass)
 
 # calculate a compitem object representing the control item
-controlMeasurements = glass[glass$item == "s1", c("logKO", "logCaO", "logFeO")]
+controlMeasurements = subset(glass, item == "s1", select = c(logKO, logCaO, logFeO))
 control = makeCompItem(controlMeasurements)
+
+# example using the formula interface
+controlMeasurements = subset(glass, item == "s1")
+control = makeCompItem(item ~ logKO + logCaO+ logFeO, data = controlMeasurements)
+ 
+}
+\author{
+David Lucy and James Curran
 }

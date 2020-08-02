@@ -10,6 +10,9 @@
 #'
 #' @return an object of class `compitem`
 #' 
+#' ## Note
+#' This function is deprecated and will eventually be replaced by [makeCompItem()].
+#' 
 #' @importFrom stats complete.cases
 #' @export
 #'
