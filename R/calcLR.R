@@ -34,7 +34,7 @@ calcLR = function(control, recovered, background, method = c("mvn","kde","lindle
   if(method == "mvn"){ ## I might be able to do this a smarter way with switch, but I can't see how just yet
     calcLR_MVN(control, recovered, background)
   }else if(method == "kde"){
-    
+    calcLR_KDE(control, recovered, background)
   }else{
     
   }
@@ -118,7 +118,7 @@ calcLR_MVN = function(control, recovered, background){
   return(LR)
 }
 
-calcLR_KDE = function(control, recovered, background){
+calcLR_KDE = function(control, recovered, background) {
   ## Calculates the likelihood ratio for a multivariate random effects with
   ## between items modelled as kernel densities This function could still do with
   ## being made a bit quicker I have tried using apply() type formulations where
@@ -154,11 +154,8 @@ calcLR_KDE = function(control, recovered, background){
   
   
   # try to trap any errors here
-  if (n.variables > 1) {
-    multivariate.flag = TRUE
-  } else {
-    multivariate.flag = FALSE
-  }
+  multivariate.flag = n.variables > 1
+  
   if (!exists("multivariate.flag")) {
     stop("undefined number of variables")
   }
@@ -171,7 +168,7 @@ calcLR_KDE = function(control, recovered, background){
   
   
   # window width calculation was formerly calculated by a separate function
-  h.opt = (((4 / ((2 * n.variables) + 1)) ^ (1 / (n.variables + 4))) * (n.groups^(-(1 / (n.variables + 4)))))
+  h.opt = (((4 / ((2 * n.variables) + 1)) ^ (1 / (n.variables + 4))) * (n.groups ^ (-(1 / (n.variables + 4)))))
   
   # print(h.opt)
   
@@ -190,21 +187,21 @@ calcLR_KDE = function(control, recovered, background){
     D.control = U / Nc
     D.recovered = U / Nr
     
-    if (!is.numeric(try(solve(U)))) {
+    if (!is.numeric(try(solve(U))
+    )) {
       value = "NA"
       return(value)
     }
     # if(! is.numeric(try(solve(C)))){value = 'NA'; return(value)}
     
     # component way of getting the inverses of the D matrices
-    U.inv = solve(U)
-    inv.D.control = U.inv * Nc
-    inv.D.recovered = U.inv * Nr
+    inv.U = solve(U)
+    inv.D.control = inv.U * Nc
+    inv.D.recovered = inv.U * Nr
     
     control.minus.recovered = control.mean - recovered.mean
-    A = inv.D.control + inv.D.recovered
     
-    # clever way of calculating the inverse of A
+    A = (Nc + Nr) * inv.U
     inv.A = U / (Nc + Nr)
     
     # assign('A', A, .GlobalEnv) # useful bit of debug code
@@ -224,7 +221,7 @@ calcLR_KDE = function(control, recovered, background){
     
     top1 = sqrt(abs(prod(eigen(C)$values)))
     
-    # trap dodgy covariance matricies
+    # trap dodgy covariance matrices
     if (prod(eigen(C)$values) < 0) {
       warning(
         "negative determinant - taking absolute value",
@@ -250,20 +247,17 @@ calcLR_KDE = function(control, recovered, background){
     # stop()
     
     # this invocation of minu makes a little difference to speed of execution
-    y.star.minus.mean = t(apply(group.means, 1, minu, y = y.star))
+    # y.star.minus.mean = t(apply(group.means, 1, minu, y = y.star)) 
+    ## Replaced by James - this is almost certainly faster, but it is unlikely to make much difference
+    y.star.minus.mean = sweep(-group.means, 2, y.star, '+')
     numerator.constant = solve(inv.A + (h.opt ^ 2) * C)
     
     
     for (ctr in 1:n.groups) {
-      matt1[ctr] = exp(
-        -0.5 * t(y.star.minus.mean[ctr,]) %*% numerator.constant %*% y.star.minus.mean[ctr,]
-      )
+      matt1[ctr] = y.star.minus.mean[ctr, , drop = FALSE] %*% numerator.constant %*% t(y.star.minus.mean[ctr, , drop = FALSE])
     }
     
-    
-    
-    
-    top5 = sum(matt1)
+    top5 = sum(exp(-0.5 * matt1))
     
     numerator = prod(top1, top2, top3, top4, top5)
     ##
@@ -272,19 +266,19 @@ calcLR_KDE = function(control, recovered, background){
     
     
     ##
-    bot1 = 1 / sqrt(abs(prod(
-      eigen(inv.D.control + inv.h.opt.squared.times.C)$values
-    )))
+    # bot1 = 1 / sqrt(abs(prod(
+    #   eigen(inv.D.control + inv.h.opt.squared.times.C)$values
+    # )))
+    bot1 = det(inv.D.control + inv.h.opt.squared.times.C)^-0.5
     
     matt2 = rep(0, n.groups)
     control.konstant = solve(D.control + ((h.opt ^ 2) * C))
     
     
+    control.mean.minus.group.means = sweep(-group.means, 2, control.mean, '+')
     
     for (ctr in 1:n.groups) {
-      matt2[ctr] = exp(
-        -0.5 * (control.mean - group.means[ctr,]) %*% control.konstant %*% (control.mean - group.means[ctr,])
-      )
+      matt2[ctr] = control.mean.minus.group.means[ctr,,drop = FALSE] %*% control.konstant %*% t(control.mean.minus.group.means[ctr,,drop = FALSE])
     }
     
     
@@ -292,48 +286,32 @@ calcLR_KDE = function(control, recovered, background){
     ## slower than the iterative approach ma2 = t(apply(group.means, 1, minu, y=control.mean)) konstant = solve(D.control + ((h.opt ^ 2) * C))
     ## ma3 = apply(ma2, 1, mulp, y=konstant) ma3 = exp(-0.5 * ma3) ma3 is now equal to matt2
     
-    bot2 = sum(matt2)
-    bot3 = 1 / sqrt(abs(prod(
-      eigen(inv.D.recovered + inv.h.opt.squared.times.C)$values
-    )))
+    bot2 = sum(exp(-0.5 * matt2))
+    # bot3 = 1 / sqrt(abs(prod(
+    #   eigen(inv.D.recovered + inv.h.opt.squared.times.C)$values
+    # )))
+    bot3 = det(inv.D.recovered + inv.h.opt.squared.times.C)^-0.5
     
     matt3 = rep(0, n.groups)
     recovered.konstant = solve(D.recovered + ((h.opt ^ 2) * C))
     
     # assign('cc', inv.A, envir=.GlobalEnv)
     
-    
+    recovered.mean.minus.group.means = sweep(-group.means, 2, recovered.mean, '+')
     
     for (ctr in 1:n.groups) {
-      matt3[ctr] = exp(
-        -0.5 * (recovered.mean - group.means[ctr,]) %*% recovered.konstant %*% (recovered.mean - group.means[ctr,])
-      )
+      matt3[ctr] = recovered.mean.minus.group.means[ctr, , drop = FALSE] %*% recovered.konstant %*% t(recovered.mean.minus.group.means[ctr, , drop = FALSE])
     }
     
-    
-    
-    bot4 = sum(matt3)
+    bot4 = sum(exp(-0.5 * matt3))
     
     denominator = prod(bot1, bot2, bot3, bot4)
     
     LR = numerator / denominator
     return(LR)
     ##
-  }  #
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  if (!multivariate.flag)
-  {
+  } else{
+    ## Univariate
     h = h.opt
     k = nrow(group.means)
     a.sq = (1 / Nc) + (1 / Nr)
@@ -364,9 +342,7 @@ calcLR_KDE = function(control, recovered, background){
       tmp = (Nc * ((control.mean - group.means[ctr]) ^ 2)) / bit3
       den1 = den1 + exp(-tmp)
       
-      tmp = (Nr * ((
-        recovered.mean - group.means[ctr]
-      ) ^ 2)) / bit4
+      tmp = (Nr * ((recovered.mean - group.means[ctr]) ^ 2)) / bit4
       den2 = den2 + exp(-tmp)
     }
     
@@ -376,6 +352,6 @@ calcLR_KDE = function(control, recovered, background){
     LR = as.numeric(numerator / denominator)
     
   }  #
- 
+  
   return(LR)
 }
