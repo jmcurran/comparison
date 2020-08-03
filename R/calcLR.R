@@ -219,16 +219,21 @@ calcLR_KDE = function(control, recovered, background) {
     
     
     
-    top1 = sqrt(abs(prod(eigen(C)$values)))
+    #top1 = sqrt(abs(prod(eigen(C)$values)))
+    top1 = sqrt(det(C))
     
+    ## I have removed this because it is just wrong.
+    ## If the determinant of C is negative, then it means the estimate of the covariance matrix
+    ## is negative definite - i.e. it is no longer a covariance matrix - and we should not be using it
+    ## for computation. The function should fall over when top1 is computed, as it will be taking a sqrt of a negative number
     # trap dodgy covariance matrices
-    if (prod(eigen(C)$values) < 0) {
-      warning(
-        "negative determinant - taking absolute value",
-        call. = TRUE,
-        immediate. = TRUE
-      )
-    }
+    # if (prod(eigen(C)$values) < 0) {
+    #   warning(
+    #     "negative determinant - taking absolute value",
+    #     call. = TRUE,
+    #     immediate. = TRUE
+    #   )
+    # }
     
     
     top2 = n.groups * (h.opt ^ n.variables)
