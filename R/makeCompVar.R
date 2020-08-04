@@ -137,24 +137,25 @@ makeCompVar.default = function(x, item.column) {
     if (multivariate.flag) {
         
         ## compute the group means
-        item.means = do.call("rbind", lapply(split.data, colMeans, na.rm = TRUE))
+        item.means = lapply(split.data, colMeans, na.rm = TRUE)
         
-        calcSW = function(item){
-            mx = colMeans(item)
+        calcSW = function(item, mx){
             d = as.matrix(sweep(item, 2, mx))
             return(nrow(item) * t(d) %*% d)
         }
 
-        s.w = Reduce('+', lapply(split.data, calcSW))
+        s.w = Reduce('+', mapply(calcSW, split.data, item.means))
         
-        calcSStar = function(item){
-            mx = colMeans(item)
+        calcSStar = function(item, mx){
             d = mx - overall.means
             #browser()
             return(nrow(item) * outer(d, d))
         }
         
-        s.star = Reduce('+', lapply(split.data, calcSStar))
+        s.star = Reduce('+', mapply(calcSStar, split.data, item.means))
+        
+        ## compute the group means
+        item.means = do.call("rbind", item.means)
 
         # # pick out the observations for each level of the grouping factor then
         # # get the mean and the sum of squared deviations (S.w)

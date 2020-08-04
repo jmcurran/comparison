@@ -210,9 +210,6 @@ calcLR_KDE = function(control, recovered, background) {
     
     
     y.star = inv.A %*% ((inv.D.control %*% (control.mean)) + (inv.D.recovered %*% (recovered.mean)))
-    
-    
-    
     ##
     
     # print(prod(eigen(C)$values)) print(det(C)) stop('HHHH')
@@ -325,10 +322,8 @@ calcLR_KDE = function(control, recovered, background) {
     
     w = ((Nc * control.mean) + (Nr * recovered.mean)) / (Nc + Nr)
     
-    K.num = k * sqrt(Nc + Nr) * sqrt(U + (Nc * C * (h ^ 2))) * sqrt(U + (Nr * C * (h ^
-                                                                                     2)))
-    K.den = sqrt(a.sq) * sqrt(U) * sqrt(Nc * Nr) * sqrt(U + ((Nc + Nr) * C * (h ^
-                                                                                2)))
+    K.num = k * sqrt(Nc + Nr) * sqrt(U + (Nc * C * (h ^ 2))) * sqrt(U + (Nr * C * (h ^ 2)))
+    K.den = sqrt(a.sq) * sqrt(U) * sqrt(Nc * Nr) * sqrt(U + ((Nc + Nr) * C * (h ^ 2)))
     K = K.num / K.den
     
     
