@@ -239,9 +239,10 @@ calcLR_KDE = function(control, recovered, background) {
     top2 = n.groups * (h.opt ^ n.variables)
     inv.h.opt.squared.times.C = solve((h.opt ^ 2) * C)
     
-    top3 = 1 / sqrt(prod(abs(
-      eigen(A + inv.h.opt.squared.times.C)$values
-    )))
+    # top3 = 1 / sqrt(prod(abs(
+    #   eigen(A + inv.h.opt.squared.times.C)$values
+    # )))
+    top3 = det(A + inv.h.opt.squared.times.C)^-0.5
     
     
     top4 = exp(
