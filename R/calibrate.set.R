@@ -19,7 +19,7 @@
 #'   \item{LR.cal.ds}{calibrated LRs for the comparison for different set}
 #' }
 #' 
-#' @references Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis of the information in forensic speaker recognition; IEEE Odyssey.
+#' @references D. Ramos and J. Gonzalez-Rodrigues, (2008) "Cross-entropy analysis of the information in forensic speaker recognition," in Proc. IEEE Odyssey, Speaker Lang. Recognit. Workshop.
 #' 
 #' @seealso [isotone::gpava()], [calc.ece()]
 #' @export

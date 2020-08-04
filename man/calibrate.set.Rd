@@ -27,7 +27,7 @@ This is an internal function, and is not meant to be called directly. However
 it has been exported just in case.
 }
 \references{
-Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis of the information in forensic speaker recognition; IEEE Odyssey.
+D. Ramos and J. Gonzalez-Rodrigues, (2008) "Cross-entropy analysis of the information in forensic speaker recognition," in Proc. IEEE Odyssey, Speaker Lang. Recognit. Workshop.
 }
 \seealso{
 \code{\link[isotone:gpava]{isotone::gpava()}}, \code{\link[=calc.ece]{calc.ece()}}

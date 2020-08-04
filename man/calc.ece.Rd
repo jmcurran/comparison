@@ -37,10 +37,8 @@ ece.1 = calc.ece(LR.same, LR.different)	# simplest invocation
 plot(ece.1)					# use plot method
 }
 \references{
-Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis
-of the information in forensic speaker recognition; IEEE Odyssey.
-Zadora, G. & Ramos, D. (2010) Evaluation of glass samples for forensic purposes -
-an application of likelihood ratio model and information-theoretical
+@references D. Ramos and J. Gonzalez-Rodrigues, (2008) "Cross-entropy analysis of the information in forensic speaker recognition," in Proc. IEEE Odyssey, Speaker Lang. Recognit. Workshop.
+Zadora, G. & Ramos, D. (2010) Evaluation of glass samples for forensic purposes -  an application of likelihood ratio model and information-theoretical
 approach. Chemometrics and Intelligent Laboratory: 102; 63-83.
 }
 \seealso{

@@ -22,10 +22,8 @@
 #'
 #'
 #'
-#' @references Ramos, D. & Gonzalez-Rodriguez, J. (2008) Cross-entropy analysis
-#'   of the information in forensic speaker recognition; IEEE Odyssey. 
-#'   Zadora, G. & Ramos, D. (2010) Evaluation of glass samples for forensic purposes -
-#'   an application of likelihood ratio model and information-theoretical
+#' @references @references D. Ramos and J. Gonzalez-Rodrigues, (2008) "Cross-entropy analysis of the information in forensic speaker recognition," in Proc. IEEE Odyssey, Speaker Lang. Recognit. Workshop.
+#'   Zadora, G. & Ramos, D. (2010) Evaluation of glass samples for forensic purposes -  an application of likelihood ratio model and information-theoretical
 #'   approach. Chemometrics and Intelligent Laboratory: 102; 63-83.
 #'
 #' @return Returns an S3 object of class ```ece```

@@ -1,15 +1,21 @@
 Package: comparison
 Version: 1.0-5
-Date: 2020-08-01
+Date: 2020-08-04
 Title: Multivariate Likelihood Ratio Calculation and Evaluation
-Authors@R: c(person("David", "Lucy", role = "aut",
-                    email = "d.lucy@lancaster.ac.uk"),
+Authors@R: c(person("David", "Lucy", role = "aut"),
              person("James", "Curran", role = c("aut", "cre"),
                     email = "j.curran@auckland.ac.nz"),
              person("Agnieszka", "Martyna", role = "aut",
                     email = "ag.rzepecka@gmail.com"))
 Encoding: UTF-8
-Description: Functions for calculating and evaluating likelihood ratios from uni/multivariate continuous observations.
+Description: Functions for calculating and evaluating likelihood ratios from uni/multivariate continuous observations. 
+        The package includes the two-level functions to calculate the LR assuming multivariate normality, and another with drops 
+        this assumption and uses a multivariate kernel density estimate. The package also contains code to perform empirical 
+        cross entropy (ECE) calibration of likelihood ratios. The LR functions are based primarily on 
+        Aitken, C.G.G. and Lucy, D. (2004) <doi:10.1046/j.0035-9254.2003.05271.x>, "Evaluation of trace evidence in the form of multivariate data," 
+        Journal of the Royal Statistical Society: Series C (Applied Statistics), 53: 109-122. The ECE functions are based primarily 
+        on  D. Ramos and J. Gonzalez-Rodrigues, (2008) "Cross-entropy analysis of the information in forensic speaker recognition," 
+        in Proc. IEEE Odyssey, Speaker Lang. Recognit. Workshop.
 Depends: R (>= 3.5.0)
 Imports: isotone
 License: GPL (>=2)
