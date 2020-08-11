@@ -16,7 +16,7 @@ makeCompItem(x, ...)
 \item{x}{a \code{matrix} or \code{data.frame} or a \code{formula}}
 
 \item{\dots}{other arguments that may be passed to the function,
-primarily a \code{data.frame} when the formula interface is used}
+primarily a \code{data.frame} when the formula interface is used.}
 }
 \value{
 an object of class \code{compitem}

@@ -7,7 +7,7 @@
 #'
 #' @param x a `matrix` or `data.frame` or a `formula`
 #' @param \dots other arguments that may be passed to the function, 
-#' primarily a `data.frame` when the formula interface is used
+#' primarily a `data.frame` when the formula interface is used.
 #'
 #' @return an object of class `compitem`
 #' 
@@ -33,7 +33,7 @@ makeCompItem = function(x, ...){
 }
 
 #' @export
-makeCompItem.default = function(x){
+makeCompItem.default = function(x, ...){
   if(!(class(x) %in% c("data.frame", "matrix"))){
     stop("x must be a matrix or a data.frame")
   }

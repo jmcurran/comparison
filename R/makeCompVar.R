@@ -33,7 +33,7 @@ makeCompVar = function(x, ...){
 
 
 #' @export
-makeCompVar.default = function(x, item.column) {
+makeCompVar.default = function(x, item.column, ...) {
     ## Compute integrated means and covariances function does univariate and
     ## multivariate in one function. This function may be used for balanced and
     ## unbalanced data so long as the imbalance is not extreme. Requires: data, a data
@@ -144,7 +144,7 @@ makeCompVar.default = function(x, item.column) {
             return(nrow(item) * t(d) %*% d)
         }
 
-        s.w = Reduce('+', mapply(calcSW, split.data, item.means))
+        s.w = Reduce('+', mapply(calcSW, split.data, item.means, SIMPLIFY = FALSE))
         
         calcSStar = function(item, mx){
             d = mx - overall.means
@@ -152,7 +152,7 @@ makeCompVar.default = function(x, item.column) {
             return(nrow(item) * outer(d, d))
         }
         
-        s.star = Reduce('+', mapply(calcSStar, split.data, item.means))
+        s.star = Reduce('+', mapply(calcSStar, split.data, item.means, SIMPLIFY = FALSE))
         
         ## compute the group means
         item.means = do.call("rbind", item.means)
