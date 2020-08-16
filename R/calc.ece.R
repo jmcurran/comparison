@@ -34,7 +34,7 @@
 #' ece.1 = calc.ece(LR.same, LR.different)	# simplest invocation
 #' plot(ece.1)					# use plot method
 #' @export
-calc.ece = function(LR.ss, LR.ds, prior = seq(from = 0.01, to = 0.99, length = 99)) {
+calc.ece = function(LR.ss, LR.ds, prior = seq(from = 0.01, to = 0.99, length = 99, method = "raw")) {
     # get the lengths of the LR vectors and prior vector
     n.ss = length(LR.ss)
     n.ds = length(LR.ds)
@@ -48,7 +48,7 @@ calc.ece = function(LR.ss, LR.ds, prior = seq(from = 0.01, to = 0.99, length = 9
     LR.null.ds = rep(1, n.ds)
     
     # calculate a set of calibrated LRs
-    cal.set = calibrate.set(LR.ss, LR.ds, method = "raw")
+    cal.set = calibrate.set(LR.ss, LR.ds, method = method)
     LR.cal.ss = cal.set$LR.cal.ss
     LR.cal.ds = cal.set$LR.cal.ds
     
