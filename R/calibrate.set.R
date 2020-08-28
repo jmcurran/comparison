@@ -27,9 +27,6 @@ calibrate.set = function(LR.ss, LR.ds, method = c("raw", "laplace")) {
     
     method = match.arg(method)
 
-    # correction for sorting - possibly not needed for R's sorting leave it in anyway
-    LR.ss = LR.ss - 1e-06
-    
     # get the lengths of the LR vectors and prior vector
     n.ss = length(LR.ss)
     n.ds = length(LR.ds)
