@@ -27,16 +27,10 @@ calibrate.set = function(LR.ss, LR.ds, method = c("raw", "laplace")) {
     
     method = match.arg(method)
 
-    # correction for sorting - possibly not needed for R's sorting leave it in anyway
-    LR.ss = LR.ss - 1e-06
-    
     # get the lengths of the LR vectors and prior vector
     n.ss = length(LR.ss)
     n.ds = length(LR.ds)
     n = n.ss + n.ds
-    
-    # set an arbitary cutoff to prevent division by zero errors but bodgy this and I'm not too keen on it - however so long as the value is
-    # close to, but less than, 1 it makes little difference cutoff = 0.99999999999999999999999999
     
     # produce vectors for the indicator function and LRs use convention that 1 signifies same set, and 0 different set
     indicator.array = c(rep(0, length = n.ds), rep(1, length = n.ss))
@@ -72,10 +66,6 @@ calibrate.set = function(LR.ss, LR.ds, method = c("raw", "laplace")) {
     
     # prior odds
     prior.odds = n.ss / n.ds
-    
-    # arbitrarily set a cutoff to prevent division by zero errors when we
-    # calculate the odds not very keen on this - don't think it is needed
-    # calibrated.posterior.probabilities[calibrated.posterior.probabilities > cutoff] = cutoff
     
     log.calibrated.posterior.LRs = log(calibrated.posterior.probabilities/(1 - calibrated.posterior.probabilities)) - log(prior.odds)
     
