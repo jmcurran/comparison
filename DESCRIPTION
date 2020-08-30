@@ -11,7 +11,7 @@ Authors@R: c(person("David", "Lucy", role = "aut",
 Encoding: UTF-8
 Description: Functions for calculating and evaluating likelihood ratios from uni/multivariate continuous observations.
 Depends: R (>= 3.5.0)
-Imports: isotone
+Imports: isotone, CVglasso
 License: GPL (>=2)
 URL: github.com/jmcurran/comparison
 LazyLoad: yes
