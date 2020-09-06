@@ -57,14 +57,11 @@ calibrate.set = function(LR.ss, LR.ds, method = c("raw", "laplace")) {
     }
     
     
-    # prior odds
+    # compute the calibrated LR based upon the prior odds and the observed data
     prior.odds = n.ss / n.ds
     
     log.calibrated.posterior.LRs = log(calibrated.posterior.probabilities/(1 - calibrated.posterior.probabilities)) - log(prior.odds)
     
-    # Brummer adds this in the ensure the idempotent property of the logLRs - not too sure how important this is
-    bit.to.add.on = 1:n * 1e-06/n
-    log.calibrated.posterior.LRs = log.calibrated.posterior.LRs + bit.to.add.on
     calibrated.posterior.LRs = exp(log.calibrated.posterior.LRs)
     
     # unpack all the calibrated LR values
