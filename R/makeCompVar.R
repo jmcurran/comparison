@@ -141,18 +141,18 @@ makeCompVar.default = function(x, item.column, ...) {
         
         calcSW = function(item, mx){
             d = as.matrix(sweep(item, 2, mx))
-            return(nrow(item) * t(d) %*% d)
+            return(t(d) %*% d)
         }
 
         s.w = Reduce('+', mapply(calcSW, split.data, item.means, SIMPLIFY = FALSE))
         
-        calcSStar = function(item, mx){
+        calcSB = function(item, mx){
             d = mx - overall.means
             #browser()
             return(nrow(item) * outer(d, d))
         }
         
-        s.star = Reduce('+', mapply(calcSStar, split.data, item.means, SIMPLIFY = FALSE))
+        s.b = Reduce('+', mapply(calcSB, split.data, item.means, SIMPLIFY = FALSE))
         
         ## compute the group means
         item.means = do.call("rbind", item.means)
@@ -234,18 +234,25 @@ makeCompVar.default = function(x, item.column, ...) {
     # both s.w and s.b are pretty well certain to be correct as I have gotten the
     # same values from different independently written functions - the final
     # evaluation of C and U is less certain - these need a good checking 
-    # givethe sums of squared deviations as part of the output
-    s.w = s.w * (n.items/n.observations)
-    s.b = s.star * (n.items/n.observations)
-    
+    # givethe sums of squared deviations as part of the output 
+    ##########
+    # NOTE: JMC - I have removed these lines because I do not think
+    # they are necessary or correct
+    # s.w = s.w * (n.items/n.observations)
+    # s.b = s.star * (n.items/n.observations)
+    ############
     
     # set the status of whether the data are balanced between items
     balanced.flag = length(unique(item.n)) == 1
 
     
     
-    U = s.w/(n.observations - n.items)#(n.items * s.w)/(n.observations * (n.observations - n.items))
+    #U = s.w/(n.observations - n.items)#(n.items * s.w)/(n.observations * (n.observations - n.items))
     #U = #U * (n.observations/n.items)  # this bit may be wrong - in so U agrees with previous code
+    # NOTE: I have rewritten this 
+    ## The WGMS = U = WGSS / (n.observations - n.items)
+    U = s.w / (n.observations - n.items)
+    
     
     # this may be the correct one C = ((s.star) / (n.observations / n.items * (n.items - 1))) - (s.w / ((n.observations ^ 2 / n.items ^ 2) *
     # (n.observations - n.items)))
@@ -253,7 +260,10 @@ makeCompVar.default = function(x, item.column, ...) {
     ## this one may also be wrong - in so U agrees with previous code 
     ## C = (s.b / (n.items - 1)) - (s.w / ((n.observations^2 / n.items) - n.items)) 
     ## this (below) is correct by A&L2004 - thanks to Hanjing Zhang and Colin Aitken for this revision
-    C = (s.b/(n.items - 1)) - (s.w/((n.observations^2/n.items) - n.observations))
+    ## C = (s.b/(n.items - 1)) - (s.w/((n.observations^2/n.items) - n.observations))
+    ## NOTE: I (JMC) have rewritten this as it is wrong
+    ## C = BGMS = BGSS / (n.items - 1)
+    C = s.b / (n.items - 1)
     
     # return(new("compcovar", v.within = U, v.between = C, n.observations = n.observations, n.items = n.items, item.n = item.n, item.means = item.means, 
     #     n.vars = n.vars, overall.means = overall.means, multivariate = multivariate.flag, balanced = balanced.flag, s.within = s.w, s.between = s.b, 
