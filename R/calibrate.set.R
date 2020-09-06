@@ -45,15 +45,8 @@ calibrate.set = function(LR.ss, LR.ds, method = c("raw", "laplace")) {
         ordered.indicator.array = c(1, 0, ordered.indicator.array, 1, 0)
     }
     
-    
-    # gpava doesn't really care what you send it as the first argument so long as it is ascending and of the appropriate length - here I just
-    # sent an integer array
-    if (method == "raw") {
-        calibrated.set = gpava(1:n, ordered.indicator.array)
-    }
-    if (method == "laplace") {
-        calibrated.set = gpava(1:(n + 4), ordered.indicator.array)
-    }
+    # gpava doesn't really care what you send it as the first argument so long as it is ascending and of the appropriate length
+    calibrated.set = gpava(seq(length(ordered.indicator.array)), ordered.indicator.array)
     
     calibrated.posterior.probabilities = calibrated.set$x
     
@@ -64,14 +57,11 @@ calibrate.set = function(LR.ss, LR.ds, method = c("raw", "laplace")) {
     }
     
     
-    # prior odds
+    # compute the calibrated LR based upon the prior odds and the observed data
     prior.odds = n.ss / n.ds
     
     log.calibrated.posterior.LRs = log(calibrated.posterior.probabilities/(1 - calibrated.posterior.probabilities)) - log(prior.odds)
     
-    # Brummer adds this in the ensure the idempotent property of the logLRs - not too sure how important this is
-    bit.to.add.on = 1:n * 1e-06/n
-    log.calibrated.posterior.LRs = log.calibrated.posterior.LRs + bit.to.add.on
     calibrated.posterior.LRs = exp(log.calibrated.posterior.LRs)
     
     # unpack all the calibrated LR values
