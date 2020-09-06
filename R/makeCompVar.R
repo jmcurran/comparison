@@ -244,8 +244,8 @@ makeCompVar.default = function(x, item.column, ...) {
 
     
     
-    U = (n.items * s.w)/(n.observations * (n.observations - n.items))
-    U = U * (n.observations/n.items)  # this bit may be wrong - in so U agrees with previous code
+    U = s.w/(n.observations - n.items)#(n.items * s.w)/(n.observations * (n.observations - n.items))
+    #U = #U * (n.observations/n.items)  # this bit may be wrong - in so U agrees with previous code
     
     # this may be the correct one C = ((s.star) / (n.observations / n.items * (n.items - 1))) - (s.w / ((n.observations ^ 2 / n.items ^ 2) *
     # (n.observations - n.items)))
