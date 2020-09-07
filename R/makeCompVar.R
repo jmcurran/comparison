@@ -26,7 +26,10 @@
 #' # using K, Ca and Fe - warning - could take time
 #' # on slower machines
 #' background = subset(glass, select = c(item, logKO, logCaO, logFeO))
-#' Z = makeCompVar(background, 1)
+#' Z1 = makeCompVar(background, 1)
+#' 
+#' # Use the formula interface
+#' Z2 = makeCompVar(item ~ logKO + logCaO + logFeO, data = glass)
 makeCompVar = function(x, ...){
     UseMethod("makeCompVar")
 }
@@ -286,7 +289,7 @@ makeCompVar.default = function(x, item.column, ...) {
     return(obj)
 }
 
-#' @describeIn makeCompItem Create a `compitem` object using a formula.
+#' @describeIn makeCompVar Create a `compvar` object using a formula.
 #' @export
 makeCompVar.formula = function(x, data =  NULL, ...){
     if(missing(x) || class(x) != "formula")

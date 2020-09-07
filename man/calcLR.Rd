@@ -2,12 +2,9 @@
 % Please edit documentation in R/calcLR.R
 \name{calcLR}
 \alias{calcLR}
-\alias{calcLR_MVN}
 \title{Calculate the likelihood ratio}
 \usage{
 calcLR(control, recovered, background, method = c("mvn", "kde", "lindley"))
-
-calcLR_MVN(control, recovered, background)
 }
 \arguments{
 \item{control}{a \code{compitem} object with the control item information.}
@@ -30,11 +27,33 @@ from a \code{compcovar} object, which represents the information from the
 population, to calculate a likelihood ratio (LR) as a measure of the evidence
 given by the observations for the same/different source propositions.
 }
-\section{Functions}{
-\itemize{
-\item \code{calcLR_MVN}: Use a multivariate normal approximation to compute the LR
-}}
+\examples{
+data(glass)
 
+controlMeasurements = subset(glass, item == "s1")
+control = makeCompItem(item ~ logKO + logCaO + logFeO, 
+                       data = controlMeasurements[1:6,])
+recovered.1 = makeCompItem(item ~ logKO + logCaO + logFeO, 
+                       data = controlMeasurements[7:12,])
+recoveredMeasurements = subset(glass, item == "s2")
+recovered.2 = makeCompItem(item ~ logKO + logCaO + logFeO,
+                           data = recoveredMeasurements[7:12,])
+                           
+background = makeCompVar(item ~ logKO + logCaO + logFeO, data = glass)
+                           
+## Same source comparison using a multivariate normal (MVN) approximation
+calcLR(control, recovered.1, background)
+
+## Same source comparison using a multivariate kernel density estimate (MVK) approximation
+calcLR(control, recovered.1, background, "kde")
+
+## Different source comparison using a multivariate normal (MVN) approximation
+calcLR(control, recovered.2, background)
+
+## Different source comparison using a multivariate kernel density estimate (MVK) approximation
+calcLR(control, recovered.2, background, "kde")
+
+}
 \references{
 Aitken, C.G.G. & Lucy, D. (2004) Evaluation of trace evidence in the form of multivariate data. \emph{Applied Statistics}: \bold{53}(1); 109-122.
 }

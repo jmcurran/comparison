@@ -20,6 +20,31 @@
 #' @export
 #'
 #' @examples
+#' data(glass)
+#' 
+#' controlMeasurements = subset(glass, item == "s1")
+#' control = makeCompItem(item ~ logKO + logCaO + logFeO, 
+#'                        data = controlMeasurements[1:6,])
+#' recovered.1 = makeCompItem(item ~ logKO + logCaO + logFeO, 
+#'                        data = controlMeasurements[7:12,])
+#' recoveredMeasurements = subset(glass, item == "s2")
+#' recovered.2 = makeCompItem(item ~ logKO + logCaO + logFeO,
+#'                            data = recoveredMeasurements[7:12,])
+#'                            
+#' background = makeCompVar(item ~ logKO + logCaO + logFeO, data = glass)
+#'                            
+#' ## Same source comparison using a multivariate normal (MVN) approximation
+#' calcLR(control, recovered.1, background)
+#' 
+#' ## Same source comparison using a multivariate kernel density estimate (MVK) approximation
+#' calcLR(control, recovered.1, background, "kde")
+#' 
+#' ## Different source comparison using a multivariate normal (MVN) approximation
+#' calcLR(control, recovered.2, background)
+#' 
+#' ## Different source comparison using a multivariate kernel density estimate (MVK) approximation
+#' calcLR(control, recovered.2, background, "kde")
+#' 
 calcLR = function(control, recovered, background, method = c("mvn","kde","lindley")){
   if(class(control) != "compitem" || class(recovered) != "compitem"){
     stop("control and recovered must be of class compitem")
@@ -40,8 +65,6 @@ calcLR = function(control, recovered, background, method = c("mvn","kde","lindle
   }
 }
 
-#' @describeIn calcLR Use a multivariate normal approximation to compute the LR 
-#' @export
 calcLR_MVN = function(control, recovered, background){
   ## Calculates the likelihood ratio for a multivariate random effect model with
   ## between items modelled normal rather than kernal REQUIRES control - a
@@ -356,3 +379,52 @@ calcLR_KDE = function(control, recovered, background) {
   
   return(LR)
 }
+
+calcLR_Lindley = function(control, recovered, background){
+  ## Calculates the likelihood ratio for a univariate random effects with
+  ## between items modelled normal this is taken from Lindley's 1977 work and
+  ## really forms the precursor to the rest of this package. REQUIRES control -
+  ## a compitem object calculated from the observations from the item considered
+  ## to be the control item - calculated from makeCompItem from the file
+  ## items_two_level.r recovered - a compitem object calculated from the
+  ## observations from the item considered to be the recovered item - calculated
+  ## from two.level.comparison.items() from the file items_two_level.r
+  
+  
+  # first check to make sure that the observations are univariate
+  if (background$multivariate) {
+    stop("Data are multivariate - univariate only allowed for this function")
+  }
+  
+  # U - is within variance C - is between variance mu - all means
+  
+  # redefine some of the items sent first the object with the population information
+  U = background$v.within
+  C = background$v.between
+  mu = background$overall.means
+  
+  # then the objects with the control and recovered item information
+  x = control$item.means
+  m = control$n.replicates
+  y = recovered$item.means
+  n = recovered$n.replicates
+  
+  
+  a = sqrt((1/m) + (1/n))
+  w = ((m * x) + (n * y))/(m + n)
+  
+  delta.1 = C + (U/m)
+  delta.2 = C + (U/n)
+  delta.3 = C + (U/(n + m))
+  z = ((delta.2 * x) + (delta.1 * y))/(delta.1 + delta.2)
+  
+  bit1 = (sqrt(delta.1) * sqrt(delta.2))/(a * sqrt(U) * sqrt(delta.3))
+  bit2 = (((x - y)^2) * C)/(a^2 * U * (delta.1 + delta.2))
+  bit3 = ((w - mu)^2)/(2 * delta.3)
+  bit4 = (((z - mu)^2) * (delta.1 + delta.2))/(2 * delta.1 * delta.2)
+  bit5 = bit4 - bit3
+  
+  LR = as.numeric(bit1 * exp(-bit2) * exp(bit5))
+  
+  return(LR)
+} 

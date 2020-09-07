@@ -2,9 +2,12 @@
 % Please edit documentation in R/makeCompVar.R
 \name{makeCompVar}
 \alias{makeCompVar}
+\alias{makeCompVar.formula}
 \title{Compute integrated means and covariances}
 \usage{
 makeCompVar(x, ...)
+
+\method{makeCompVar}{formula}(x, data = NULL, ...)
 }
 \arguments{
 \item{x}{a \code{matrix}, or \code{data.frame}, of observations, with cases in rows,
@@ -27,6 +30,11 @@ replicates for each item from the sample, and other bits needed to make up a
 Uses ML estimation at the moment - this will almost certainly change in the future and
 hopefully allow regularisation methods to get a more stable (and non-singular) estimate.
 }
+\section{Methods (by class)}{
+\itemize{
+\item \code{formula}: Create a \code{compvar} object using a formula.
+}}
+
 \examples{
 # load Greg Zadora's glass data
 data(glass)
@@ -35,7 +43,10 @@ data(glass)
 # using K, Ca and Fe - warning - could take time
 # on slower machines
 background = subset(glass, select = c(item, logKO, logCaO, logFeO))
-Z = makeCompVar(background, 1)
+Z1 = makeCompVar(background, 1)
+
+# Use the formula interface
+Z2 = makeCompVar(item ~ logKO + logCaO + logFeO, data = glass)
 }
 \author{
 David Lucy and James Curran
