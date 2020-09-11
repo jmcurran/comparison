@@ -19,7 +19,6 @@
 #' model = logistic.calibrate.set(LR.same, LR.different) # compute the logistic calibration on the data
 #' LR.unknown = c(0.6, 0.7, 1.2, 5)                      # the list of news LRs (to be calibrated)
 #' logistic.apply.calibration(LR.unknown, model)         # compute the calibrated LRs for the list with the model
-#' logistic.apply.calibration(LR.unknown, model$fit)     # compute the calibrated LRs for the list with the model
 #'
 #' @export
 logistic.apply.calibration = function(LR, model) {
@@ -30,8 +29,12 @@ logistic.apply.calibration = function(LR, model) {
     predictors = log10(LR)
     
     # compute the calibrated values
-    out = exp(predictors * coef[2] + coef[1])
+    calibrated.posterior.ratio = exp(predictors * coef[2] + coef[1])
     
-    return(out)
+    # compute the correct LR depending upon the prior odds
+    calibrated.posterior.probabilities = calibrated.posterior.ratio/(calibrated.posterior.ratio + 1)
+    calibrated.posterior.LRs = (calibrated.posterior.probabilities/(1 - calibrated.posterior.probabilities)) / (model$prior.odds)
+    
+    return(calibrated.posterior.LRs)
 }
 

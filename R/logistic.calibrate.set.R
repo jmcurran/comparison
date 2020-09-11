@@ -8,7 +8,7 @@
 #' @seealso [logistic.apply.calibration()]
 #'
 #' @return a `list` with multiple items: \describe{
-#'   \item{fit}{logistic model}
+#'   \item{prior.odds}{prior odds for the input data}
 #'   \item{coefficients}{coefficients of the fitted model}
 #'   \item{data}{The input and calibrated data}
 #'   \item{LR.cal.ss}{The calibrated data for the same source list}
@@ -35,12 +35,18 @@ logistic.calibrate.set = function(LR.ss, LR.ds) {
         LR.ss.dataframe,
         LR.ds.dataframe
     )
+    # get the lengths of the LR vectors and prior vector
+    n.ss = length(LR.ss)
+    n.ds = length(LR.ds)
+    n = n.ss + n.ds
+    prior.odds = n.ss / n.ds
     
     # compute the predictor list
     data$loglr = log10(data$lr)
     
     # fit the logistic function on the data
     fit = glm(data$post ~ data$loglr, family = binomial(link = "logit"))
+    fit$prior.odds = prior.odds
     
     # warn the user if the logistic regression is not increasing with increasing LRs
     # this can happen if the same-source and difference-sources are inverted, or if the model is not sufficiently performant
@@ -56,8 +62,8 @@ logistic.calibrate.set = function(LR.ss, LR.ds) {
     outdata = subset(data, select = c(lr, post, callr))
     
     out = list(
-        fit          = fit,
         coefficients = coefficients(fit),
+        prior.odds   = prior.odds,
         data         = outdata,
         LR.cal.ss    = LR.cal.ss,
         LR.cal.ds    = LR.cal.ds
