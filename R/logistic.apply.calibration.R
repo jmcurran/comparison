@@ -14,11 +14,11 @@
 #' @return a `list` with the calibrated LR values
 #'
 #' @examples
-#' LR.same = c(0.5, 2, 4, 6, 8, 10)                      # the list of LRs for the same source proposition
-#' LR.different = c(0.2, 0.4, 0.6, 0.8, 1.1)             # the list of LRs for the different source proposition
-#' model = logistic.calibrate.set(LR.same, LR.different) # compute the logistic calibration on the data
-#' LR.unknown = c(0.6, 0.7, 1.2, 5)                      # the list of news LRs (to be calibrated)
-#' logistic.apply.calibration(LR.unknown, model)         # compute the calibrated LRs for the list with the model
+#' LR.same = c(0.5, 2, 4, 6, 8, 10)                            # the list of LRs for the same source proposition
+#' LR.different = c(0.2, 0.4, 0.6, 0.8, 1.1)                   # the list of LRs for the different source proposition
+#' model = logistic.calibrate.get.model(LR.same, LR.different) # compute the logistic calibration on the data
+#' LR.unknown = c(0.6, 0.7, 1.2, 5)                            # the list of news LRs (to be calibrated)
+#' logistic.apply.calibration(LR.unknown, model)               # compute the calibrated LRs for the list with the model
 #'
 #' @export
 logistic.apply.calibration = function(LR, model) {

@@ -22,51 +22,15 @@
 #'
 #' @export
 logistic.calibrate.set = function(LR.ss, LR.ds) {
-    # preparation of the data.frame to store all the mendatory data to make the calibration
-    LR.ss.dataframe = data.frame(
-        lr   = LR.ss,
-        post = 1
-    )
-    LR.ds.dataframe = data.frame(
-        lr   = LR.ds,
-        post = 0
-    )
-    data = rbind(
-        LR.ss.dataframe,
-        LR.ds.dataframe
-    )
-    # get the lengths of the LR vectors and prior vector
-    n.ss = length(LR.ss)
-    n.ds = length(LR.ds)
-    n = n.ss + n.ds
-    prior.odds = n.ss / n.ds
-    
-    # compute the predictor list
-    data$loglr = log10(data$lr)
-    
-    # fit the logistic function on the data
-    fit = glm(data$post ~ data$loglr, family = binomial(link = "logit"))
-    fit$prior.odds = prior.odds
-    
-    # warn the user if the logistic regression is not increasing with increasing LRs
-    # this can happen if the same-source and difference-sources are inverted, or if the model is not sufficiently performant
-    if(fit$coefficients[2] < 0)
-        warning( "The logistic regression is decreasing. Check that the LR.ss and LR.ds variables are in the right order (the LR values should be bigger for the same source that for the different source proposition) or that your model is sufficiently performant" )
+    fit = logistic.calibrate.get.model(LR.ss, LR.ds)
     
     # compute the calibrated value for all input LRs
-    data$callr = logistic.apply.calibration(data$lr, fit)
-    LR.cal.ss  = logistic.apply.calibration(LR.ss, fit)
-    LR.cal.ds  = logistic.apply.calibration(LR.ds, fit)
-    
-    # prepare the return value
-    outdata = subset(data, select = c(lr, post, callr))
+    LR.cal.ss = logistic.apply.calibration(LR.ss, fit)
+    LR.cal.ds = logistic.apply.calibration(LR.ds, fit)
     
     out = list(
-        coefficients = coefficients(fit),
-        prior.odds   = prior.odds,
-        data         = outdata,
-        LR.cal.ss    = LR.cal.ss,
-        LR.cal.ds    = LR.cal.ds
+        LR.cal.ss = LR.cal.ss,
+        LR.cal.ds = LR.cal.ds
     )
     
     return(out)
