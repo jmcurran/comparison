@@ -84,18 +84,18 @@ calcLR_MVN = function(control, recovered, background){
   mu = background$overall.means
   
   # then the objects with the contro and recovered item information
-  cont.means = control$item.means
+  mean.cont = control$item.means
   n.cont = control$n.replicates
-  rec.means = recovered$item.means
+  mean.rec = recovered$item.means
   n.rec = recovered$n.replicates
   
   # weighted mean for the control and recovered item
-  y.star = ((n.cont * cont.means) + (n.rec * rec.means))/(n.cont + n.rec)
+  y.star = ((n.cont * mean.cont) + (n.rec * mean.rec))/(n.cont + n.rec)
   
   # calculate some of the repeated components
-  diff.cont.rec = cont.means - rec.means
-  diff.cont.mu = cont.means - mu
-  diff.rec.mu = rec.means - mu
+  diff.cont.rec = mean.cont - mean.rec
+  diff.cont.mu = mean.cont - mu
+  diff.rec.mu = mean.rec - mu
   diff.y.star.mu = y.star - mu
   
   
@@ -109,12 +109,13 @@ calcLR_MVN = function(control, recovered, background){
   k1 = (n.cont * n.rec) / (n.cont + n.rec)
   k2 = (1 / k1)^nrow(U)
   logNumerator1 = k1 * t(diff.cont.rec) %*% solve(U) %*% (diff.cont.rec) + log(k2 * det(U))
-  logNumerator2 = t(diff.y.star.mu) %*% solve(U/(n.cont + n.rec) + C) %*% (diff.y.star.mu) + log(det(U/(n.cont + n.rec) + C))
+  logNumerator2 = t(diff.y.star.mu) %*% solve(U / (n.cont + n.rec) + C) %*% (diff.y.star.mu) 
+                  + log(det(U / (n.cont + n.rec) + C))
   logNumerator = logNumerator1 + logNumerator2
   
   # Denominator calculation
-  logDenominator1 = t(diff.cont.mu) %*% solve(U/n.cont + C) %*% (diff.cont.mu) + log(det(U/n.cont + C))
-  logDenominator2 = t(diff.rec.mu) %*% solve(U/n.rec + C) %*% (diff.rec.mu) + log(det(U/n.rec + C))
+  logDenominator1 = t(diff.cont.mu) %*% solve(U / n.cont + C) %*% (diff.cont.mu) + log(det(U / n.cont + C))
+  logDenominator2 = t(diff.rec.mu) %*% solve(U / n.rec + C) %*% (diff.rec.mu) + log(det(U / n.rec + C))
   logDenominator = logDenominator1 + logDenominator2
   
   LR = as.numeric(exp(-0.5 *(logNumerator - logDenominator)))

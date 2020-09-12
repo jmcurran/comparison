@@ -265,8 +265,9 @@ makeCompVar.default = function(x, item.column, ...) {
     ## this (below) is correct by A&L2004 - thanks to Hanjing Zhang and Colin Aitken for this revision
     ## C = (s.b/(n.items - 1)) - (s.w/((n.observations^2/n.items) - n.observations))
     ## NOTE: I (JMC) have rewritten this as it is wrong
-    ## C = BGMS = BGSS / (n.items - 1)
-    C = s.b / (n.items - 1)
+    ## The BG Covariance = (BGMS - WGMS) / r where r is the number of observations per group. T
+    ## This is ONLY true in the balanced case
+    C = (s.b / (n.items - 1) - U) / (n.observations / n.items)
     
     # return(new("compcovar", v.within = U, v.between = C, n.observations = n.observations, n.items = n.items, item.n = item.n, item.means = item.means, 
     #     n.vars = n.vars, overall.means = overall.means, multivariate = multivariate.flag, balanced = balanced.flag, s.within = s.w, s.between = s.b, 
