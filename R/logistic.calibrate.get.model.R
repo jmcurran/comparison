@@ -53,7 +53,8 @@ logistic.calibrate.get.model = function(LR.ss, LR.ds) {
     # prepare the return value
     out = list(
         coefficients = coefficients(fit),
-        prior.odds   = prior.odds
+        prior.odds   = prior.odds,
+        fit          = fit
     )
     
     return(out)
