@@ -43,7 +43,7 @@ logistic.calibrate.get.model = function(LR.ss, LR.ds) {
     data$loglr = log10(data$lr)
     
     # fit the logistic function on the data
-    fit = glm(data$post ~ data$loglr, family = binomial(link = "logit"))
+    fit = glm(post ~ loglr, data = data, family = binomial(link = "logit"))
     
     # warn the user if the logistic regression is not increasing with increasing LRs
     # this can happen if the same-source and difference-sources are inverted, or if the model is not sufficiently performant
@@ -52,9 +52,8 @@ logistic.calibrate.get.model = function(LR.ss, LR.ds) {
     
     # prepare the return value
     out = list(
-        coefficients = coefficients(fit),
-        prior.odds   = prior.odds,
-        fit          = fit
+        prior.odds = prior.odds,
+        fit        = fit
     )
     
     return(out)
