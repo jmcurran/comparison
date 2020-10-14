@@ -22,14 +22,9 @@
 #'
 #' @export
 logistic.apply.calibration = function(LR, model) {
-    # extract the coefficients of the model variable
-    coef = coefficients(model)
-    
-    # the predictors are the log10(LR), to be coherent with the model fitting function
-    predictors = log10(LR)
-    
     # compute the calibrated values
-    calibrated.posterior.ratio = exp(predictors * coef[2] + coef[1])
+    newdata = data.frame(loglr = log10(LR))
+    calibrated.posterior.ratio = exp(predict(model$fit,newdata))
     
     # compute the correct LR depending upon the prior odds
     calibrated.posterior.probabilities = calibrated.posterior.ratio/(calibrated.posterior.ratio + 1)
