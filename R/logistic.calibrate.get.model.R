@@ -1,7 +1,9 @@
 #' Compute and returns the logistic regression for a dataset
 #'
-#' @param LR.ss a vector of likelihood ratios for the comparisons of items known to be from the same source
-#' @param LR.ds a vector of likelihood ratios for the comparisons of items known to be from different sources
+#' @param LR.ss a vector of likelihood ratios for the comparisons of items known 
+#' to be from the same source
+#' @param LR.ds a vector of likelihood ratios for the comparisons of items known
+#'  to be from different sources
 #'
 #' @author Marco De Donno
 #'
@@ -11,11 +13,16 @@
 #'   \item{coefficients}{coefficients of the fitted model}
 #'   \item{prior.odds}{prior odds for the input data}
 #' }
+#' 
+#' @importFrom stats binomial
 #'
 #' @examples
-#' LR.same = c(0.5, 2, 4, 6, 8, 10)                    # the list of LRs for the same source proposition
-#' LR.different = c(0.2, 0.4, 0.6, 0.8, 1.1)           # the list of LRs for the different source proposition
-#' logistic.calibrate.get.model(LR.same, LR.different) # compute the logistic calibration on the data
+#' # the list of LRs for the same source proposition
+#' LR.same = c(0.5, 2, 4, 6, 8, 10)
+#' # the list of LRs for the different source proposition
+#' LR.different = c(0.2, 0.4, 0.6, 0.8, 1.1)
+#' # compute the logistic calibration on the data
+#' logistic.calibrate.get.model(LR.same, LR.different) 
 #'
 #' @export
 logistic.calibrate.get.model = function(LR.ss, LR.ds) {

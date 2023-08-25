@@ -6,14 +6,16 @@
 #' fragments taken from a crime scene source such as a window.
 #'
 #' @param x a `matrix` or `data.frame` or a `formula`
-#' @param \dots other arguments that may be passed to the function, 
-#' primarily a `data.frame` when the formula interface is used.
+#' @param data if \code{x} is a formula, then the user must supply a \code{data.frame}
+#' containing the observations.
+#' @param \dots other arguments that may be passed to the function.
 #'
 #' @return an object of class `compitem`
 #' 
 #' @author David Lucy and James Curran
 #' 
 #' @importFrom stats complete.cases
+#' @importFrom methods is
 #' @export
 #'
 #' @examples
@@ -34,7 +36,7 @@ makeCompItem = function(x, ...){
 
 #' @export
 makeCompItem.default = function(x, ...){
-  if(!(class(x) %in% c("data.frame", "matrix"))){
+  if(!(is(x, "matrix") || is(x, "data.frame"))){
     stop("x must be a matrix or a data.frame")
   }
   
@@ -82,8 +84,9 @@ makeCompItem.default = function(x, ...){
 #' @describeIn makeCompItem Create a `compitem` object using a formula.
 #' @export
 makeCompItem.formula = function(x, data =  NULL, ...){
-    if(missing(x) || class(x) != "formula")
+    if(missing(x) || !is(x, "formula")){
       stop("missing or incorrect formula")
+    }
     
     form = x
 

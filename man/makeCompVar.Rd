@@ -2,10 +2,13 @@
 % Please edit documentation in R/makeCompVar.R
 \name{makeCompVar}
 \alias{makeCompVar}
+\alias{makeCompVar.default}
 \alias{makeCompVar.formula}
 \title{Compute integrated means and covariances}
 \usage{
 makeCompVar(x, ...)
+
+\method{makeCompVar}{default}(x, item.column, ...)
 
 \method{makeCompVar}{formula}(x, data = NULL, ...)
 }
@@ -13,9 +16,12 @@ makeCompVar(x, ...)
 \item{x}{a \code{matrix}, or \code{data.frame}, of observations, with cases in rows,
 and properties as columns, or a \code{formula}.}
 
-\item{\dots}{other arguments - primarily a \code{data.frame} for the \code{formula} method.}
+\item{\dots}{other arguments.}
 
 \item{item.column}{an integer indicating which column gives the item.}
+
+\item{data}{if \code{x} is a \code{formula}, then the user must supply a \code{data.frame}
+containing the observations.}
 }
 \value{
 an object of class \code{compvar}
@@ -32,9 +38,11 @@ hopefully allow regularisation methods to get a more stable (and non-singular) e
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{formula}: Create a \code{compvar} object using a formula.
-}}
+\item \code{makeCompVar(default)}: Create a \code{compvar} object using a formula.
 
+\item \code{makeCompVar(formula)}: Create a \code{compvar} object using a formula.
+
+}}
 \examples{
 # load Greg Zadora's glass data
 data(glass)

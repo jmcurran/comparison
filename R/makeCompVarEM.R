@@ -2,6 +2,7 @@ makeCompVarEM = function(x, ...){
   UseMethod("makeCompVarEM")
 }
 
+#' @importFrom CVglasso CVglasso
 makeCompVarEM.default = function(x, f, num.steps = 10){
   if(!data.frame(x) || !is.factor(f)){
     stop("x must be a data.frame and f must be a factor")

@@ -46,11 +46,11 @@
 #' calcLR(control, recovered.2, background, "kde")
 #' 
 calcLR = function(control, recovered, background, method = c("mvn","kde","lindley")){
-  if(class(control) != "compitem" || class(recovered) != "compitem"){
+  if(!is(control, "compitem") || !is(recovered, "compitem")){
     stop("control and recovered must be of class compitem")
   }
   
-  if(class(background) != "compvar"){
+  if(!is(background, "compvar")){
     stop("background must be of class compvar")
   }
   
@@ -107,18 +107,26 @@ calcLR_MVN = function(control, recovered, background){
   
   ## Numerator calculation Cleaned up and hopefully sped up by James Curran
   k1 = (n.cont * n.rec) / (n.cont + n.rec)
-  k2 = (1 / k1)^nrow(U)
-  logNumerator1 = k1 * t(diff.cont.rec) %*% solve(U) %*% (diff.cont.rec) + log(k2 * det(U))
-  logNumerator2 = t(diff.y.star.mu) %*% solve(U / (n.cont + n.rec) + C) %*% (diff.y.star.mu) 
-                  + log(det(U / (n.cont + n.rec) + C))
-  logNumerator = logNumerator1 + logNumerator2
+  logNumerator1 = k1 * t(diff.cont.rec) %*% solve(U) %*% 
+                  (diff.cont.rec) + log(det(U / k1))
+  logNumerator2 = t(diff.y.star.mu) %*% 
+                  solve(U / (n.cont + n.rec) + C) %*%
+                  (diff.y.star.mu) +  
+                  log(det(U / (n.cont + n.rec) + C))
+  logNumerator = -0.5 * (logNumerator1 + logNumerator2)
   
   # Denominator calculation
-  logDenominator1 = t(diff.cont.mu) %*% solve(U / n.cont + C) %*% (diff.cont.mu) + log(det(U / n.cont + C))
-  logDenominator2 = t(diff.rec.mu) %*% solve(U / n.rec + C) %*% (diff.rec.mu) + log(det(U / n.rec + C))
+  # denom1 = exp(-1/2 * t(diff.cont.mu) %*% solve(U/n.cont + C) %*% (diff.cont.mu)) * (det(U/n.cont + C))^(-1/2)
+  # denom2 = exp(-1/2 * t(diff.rec.mu) %*% solve(U/n.rec + C) %*% (diff.rec.mu)) * (det(U/n.rec + C))^(-1/2)
+  # denom = denom1 * denom2
+  # 
+  logDenominator1 = -0.5 * (t(diff.cont.mu) %*% solve(U / n.cont + C) 
+                            %*% diff.cont.mu + log(det(U / n.cont + C)))
+  logDenominator2 = -0.5 * (t(diff.rec.mu) %*% solve(U / n.rec + C) 
+                            %*% diff.rec.mu + log(det(U / n.rec + C)))
   logDenominator = logDenominator1 + logDenominator2
   
-  LR = as.numeric(exp(-0.5 *(logNumerator - logDenominator)))
+  LR = as.numeric(exp(logNumerator - logDenominator))
   #browser()
   ## original code from 2004 which follows the Aitken & Lucy paper (p.115) closely 
   ## this is here so people trying to follow the code with

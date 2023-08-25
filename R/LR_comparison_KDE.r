@@ -1,80 +1,81 @@
-##The function 'LR.KDE.function' calculates likelihood ratio results in comparison problems when KDE is used for probability density function estimation.
+LR.KDE.function = function(y.mean.1, y.mean.2, y.star, U, C, h, population, variables, p, m, n.1,
+    n.2) {
 
-LR.KDE.function = function(y.mean.1, y.mean.2, y.star, U, C, h, population, variables, p, m, n.1, n.2)
-{
-	##Numerator calculation
+    ## The function 'LR.KDE.function' calculates likelihood ratio results in comparison problems
+    ## when KDE is used for probability density function estimation.
 
-	nom2 = (2*pi)^(-p/2)*exp(-1/2*(y.mean.1-y.mean.2) %*% solve(U/n.1+U/n.2) %*% t(y.mean.1-y.mean.2))*(det(U/n.1+U/n.2))^(-1/2)
+    ## Numerator calculation
 
-	nom1 = 0
+    nom2 = (2 * pi)^(-p/2) * exp(-1/2 * (y.mean.1 - y.mean.2) %*% solve(U/n.1 + U/n.2) %*% t(y.mean.1 -
+        y.mean.2)) * (det(U/n.1 + U/n.2))^(-1/2)
 
-	##'i' runs through all objects from the population
-	for(i in 1:m)	
-	{
-		items = unique(population$Item)
+    nom1 = 0
 
-		##creating a matrix of measurements for the ith object
-		ith.object = as.matrix(population[which(population$Item == items[i]),variables])
+    ## i runs through all objects from the population
+    for (i in 1:m) {
+        items = unique(population$Item)
 
-		##calculating the 'object.mean'
-		object.mean = matrix(apply(ith.object,2,mean), nrow = 1)
+        ## creating a matrix of measurements for the ith object
+        ith.object = as.matrix(population[which(population$Item == items[i]), variables])
 
-		exp.1.1 = exp(-(y.star-object.mean) %*% (solve(U/(n.1+n.2)+C*h^2)) %*% t(y.star-object.mean)/2)
+        ## calculating the 'object.mean'
+        object.mean = matrix(apply(ith.object, 2, mean), nrow = 1)
 
-		nom1 = nom1 + exp.1.1	
-	}
+        exp.1.1 = exp(-(y.star - object.mean) %*% (solve(U/(n.1 + n.2) + C * h^2)) %*% t(y.star -
+            object.mean)/2)
 
-	nom2.1 = nom1/m
+        nom1 = nom1 + exp.1.1
+    }
 
-	exp.1.2 = (2*pi)^(-p/2)*det(U/(n.1+n.2)+C*h^2)^(-1/2)
-	nom3 = nom2.1*exp.1.2
+    nom2.1 = nom1/m
 
-	nom = nom2*nom3
+    exp.1.2 = (2 * pi)^(-p/2) * det(U/(n.1 + n.2) + C * h^2)^(-1/2)
+    nom3 = nom2.1 * exp.1.2
 
-	##Denominator calculation
-	denom1 = 0
+    nom = nom2 * nom3
 
-	for(i in 1:m)
-	{
-		items = unique(population$Item)
-		ith.object = as.matrix(population[which(population$Item == items[i]),variables])
-		object.mean = matrix(apply(ith.object,2,mean), nrow = 1)
+    ## Denominator calculation
+    denom1 = 0
 
-		exp.2.1 = exp(-(y.mean.1-object.mean) %*% (solve(U/n.1+C*h^2)) %*% t(y.mean.1-object.mean)/2)
+    for (i in 1:m) {
+        items = unique(population$Item)
+        ith.object = as.matrix(population[which(population$Item == items[i]), variables])
+        object.mean = matrix(apply(ith.object, 2, mean), nrow = 1)
 
-		denom1 = denom1 + exp.2.1	
-	}
+        exp.2.1 = exp(-(y.mean.1 - object.mean) %*% (solve(U/n.1 + C * h^2)) %*% t(y.mean.1 - object.mean)/2)
 
-	denom2 = denom1/m
+        denom1 = denom1 + exp.2.1
+    }
 
-	exp.2.2 = (2*pi)^(-p/2)*det(U/n.1+C*h^2)^(-1/2)
-	denom3 = denom2*exp.2.2
+    denom2 = denom1/m
 
-	denom4 = 0
+    exp.2.2 = (2 * pi)^(-p/2) * det(U/n.1 + C * h^2)^(-1/2)
+    denom3 = denom2 * exp.2.2
 
-	for(i in 1:m)
-	{
-		items = unique(population$Item)
-		ith.object = as.matrix(population[which(population$Item == items[i]),variables])
-		object.mean = matrix(apply(ith.object,2,mean),nrow = 1)
+    denom4 = 0
 
-		exp.2.3 = exp(-(y.mean.2-object.mean) %*% (solve(U/n.2+C*h^2)) %*% t(y.mean.2-object.mean)/2)
+    for (i in 1:m) {
+        items = unique(population$Item)
+        ith.object = as.matrix(population[which(population$Item == items[i]), variables])
+        object.mean = matrix(apply(ith.object, 2, mean), nrow = 1)
+
+        exp.2.3 = exp(-(y.mean.2 - object.mean) %*% (solve(U/n.2 + C * h^2)) %*% t(y.mean.2 - object.mean)/2)
 
 
-		denom4 = denom4 + exp.2.3
-	}
+        denom4 = denom4 + exp.2.3
+    }
 
-	denom5 = denom4/m
+    denom5 = denom4/m
 
-	exp.2.4 = (2*pi)^(-p/2)*det(U/n.2+C*h^2)^(-1/2)
-	denom6 = denom5*exp.2.4
+    exp.2.4 = (2 * pi)^(-p/2) * det(U/n.2 + C * h^2)^(-1/2)
+    denom6 = denom5 * exp.2.4
 
-	denom = denom3*denom6
+    denom = denom3 * denom6
 
-	LR.KDE = nom/denom
+    LR.KDE = nom/denom
 
-	result = list(LR.KDE = LR.KDE)
-	return (result)
+    result = list(LR.KDE = LR.KDE)
+    return(result)
 }
 
 

@@ -12,8 +12,10 @@ makeCompItem(x, ...)
 \arguments{
 \item{x}{a \code{matrix} or \code{data.frame} or a \code{formula}}
 
-\item{\dots}{other arguments that may be passed to the function,
-primarily a \code{data.frame} when the formula interface is used.}
+\item{\dots}{other arguments that may be passed to the function.}
+
+\item{data}{if \code{x} is a formula, then the user must supply a \code{data.frame}
+containing the observations.}
 }
 \value{
 an object of class \code{compitem}
@@ -26,9 +28,9 @@ fragments taken from a crime scene source such as a window.
 }
 \section{Methods (by class)}{
 \itemize{
-\item \code{formula}: Create a \code{compitem} object using a formula.
-}}
+\item \code{makeCompItem(formula)}: Create a \code{compitem} object using a formula.
 
+}}
 \examples{
 # load Greg Zadora's glass data
 data(glass)

@@ -7,7 +7,11 @@
 #'
 #' @param x a `matrix`, or `data.frame`, of observations, with cases in rows,
 #'   and properties as columns, or a `formula`.
-#' @param \dots other arguments - primarily a `data.frame` for the `formula` method.
+#' @param item.column item.column an integer scalar indicating which column contains 
+#' the item label.
+#' @param data if \code{x} is a \code{formula}, then the user must supply a \code{data.frame}
+#' containing the observations.
+#' @param \dots other arguments.
 #' @param item.column an integer indicating which column gives the item.
 #'
 #' @details Uses ML estimation at the moment - this will almost certainly change in the future and
@@ -16,6 +20,7 @@
 #' @author David Lucy and James Curran
 #'
 #' @return an object of class `compvar`
+#' @importFrom stats coefficients glm model.frame model.response rnorm
 #' @export
 #'
 #' @examples
@@ -35,6 +40,7 @@ makeCompVar = function(x, ...){
 }
 
 
+#' @describeIn makeCompVar Create a `compvar` object using a formula.
 #' @export
 makeCompVar.default = function(x, item.column, ...) {
     ## Compute integrated means and covariances function does univariate and
@@ -293,7 +299,7 @@ makeCompVar.default = function(x, item.column, ...) {
 #' @describeIn makeCompVar Create a `compvar` object using a formula.
 #' @export
 makeCompVar.formula = function(x, data =  NULL, ...){
-    if(missing(x) || class(x) != "formula")
+    if(missing(x) || !is(x, "formula"))
         stop("missing or incorrect formula")
     
     form = x
